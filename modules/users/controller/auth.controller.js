@@ -41,15 +41,15 @@ const login = async (req, res) => {
 
         // Check if the user exists and is not deleted
         if (!user || user.isDeleted) {
-            return res.status(statusCodes.BAD_REQUEST).json({ message: "Email is not found or user is deleted" });
-        }        
+            return res.status(statusCodes.NOT_FOUND).json({ message: "Email is not found or user is deleted" });
+        }
         // Check if the password matches
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
             return res.status(statusCodes.BAD_REQUEST).json({ message: "Password is incorrect" });
         }
-        
+
         // Check if the user is verified
         if (!user.isVerified) {
             return res.status(statusCodes.FORBIDDEN).json({ message: "Email is not verified" });
@@ -76,7 +76,7 @@ const login = async (req, res) => {
     } catch (error) {
         // Handle errors and log them for debugging
         console.error("Login error:", error);
-        res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error" });
+        res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
     }
 };
 
