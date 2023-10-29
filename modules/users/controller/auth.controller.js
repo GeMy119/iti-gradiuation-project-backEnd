@@ -1,4 +1,4 @@
-const statusCodes = require("http-status-codes");
+const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const User = require("../../../connectionDB/user.schema");
 const bcrypt = require("bcrypt");
@@ -10,11 +10,11 @@ const register = async (req, res) => {
         const existingUser = await User.findOne({ email });
         // console.log(existingUser)
         if (existingUser) {
-            return res.status(statusCodes.BAD_REQUEST).json({ message: "Email is already registered" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Email is already registered" });
         }
         // Check if the provided password matches the confirm password
         if (password !== cPassword) {
-            return res.status(statusCodes.BAD_REQUEST).json({ message: "Password and confirm password do not match" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Password and confirm password do not match" });
         }
         // Create a new user document
         const newUser = new User({
@@ -28,9 +28,9 @@ const register = async (req, res) => {
         });
         // Save the user to the database
         await newUser.save();
-        res.status(statusCodes.CREATED).json({ message: "Registration successful" });
+        res.status(StatusCodes.CREATED).json({ message: "Registration successful" });
     } catch (error) {
-        res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
     }
 };
 
@@ -41,18 +41,18 @@ const login = async (req, res) => {
 
         // Check if the user exists and is not deleted
         if (!user || user.isDeleted) {
-            return res.status(statusCodes.NOT_FOUND).json({ message: "Email is not found or user is deleted" });
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "Email is not found or user is deleted" });
         }
         // Check if the password matches
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            return res.status(statusCodes.BAD_REQUEST).json({ message: "Password is incorrect" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Password is incorrect" });
         }
 
         // Check if the user is verified
         if (!user.isVerified) {
-            return res.status(statusCodes.FORBIDDEN).json({ message: "Email is not verified" });
+            return res.status(StatusCodes.FORBIDDEN).json({ message: "Email is not verified" });
         }
 
         // Sign a token with user information
@@ -63,6 +63,7 @@ const login = async (req, res) => {
                 isVerified: user.isVerified,
                 isDeleted: user.isDeleted,
                 isLogin: user.isLogin,
+                role: user.role
             },
             process.env.JWT_SECRET_KEY,
             { expiresIn: '1h' } // Set a reasonable token expiration time
@@ -72,11 +73,11 @@ const login = async (req, res) => {
         user.isLogin = true;
         await user.save();
 
-        res.status(statusCodes.OK).json({ message: "Welcome", token });
+        res.status(StatusCodes.OK).json({ message: "Welcome", token });
     } catch (error) {
         // Handle errors and log them for debugging
         console.error("Login error:", error);
-        res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
     }
 };
 

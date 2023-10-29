@@ -9,10 +9,15 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, default: "user", enum: ["user", "admin", "superAdmin"] },
-    gender: { type: String, required: true, enum: ["male","female"] },
+    gender: { type: String, required: true, enum: ["male", "female"] },
     isLogin: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },
-    isDeleted: { type: Boolean, default: false }
+    isDeleted: { type: Boolean, default: false },
+    eventId: [{ type: mongoose.Schema.Types.Object, ref: "Event" }],
+    hotelId: [{ type: mongoose.Schema.Types.Object, ref: "Hotel" }],
+    carId: [{ type: mongoose.Schema.Types.Object, ref: "Car" }],
+    resturantId: [{ type: mongoose.Schema.Types.Object, ref: "Resturant" }],
+    visitPlaceId: [{ type: mongoose.Schema.Types.Object, ref: "VisitPlace" }],
 }, {
     timestamps: true
 });
