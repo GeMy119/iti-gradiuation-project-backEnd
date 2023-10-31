@@ -33,5 +33,16 @@ module.exports = {
                     'string.pattern.base': 'Password must be at least 8 characters long and include at least one letter and one number.',
                 }),
         })
+    },
+    resetPasswordSchema: {
+        body: Joi.object().keys({
+            currentPassword: Joi.string().required(),
+            newPassword: Joi.string()
+                .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$'))
+                .required()
+                .messages({
+                    'string.pattern.base': 'Password must be at least 8 characters long and include at least one letter and one number.',
+                }),
+        })
     }
 }

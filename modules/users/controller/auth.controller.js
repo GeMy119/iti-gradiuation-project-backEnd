@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const User = require("../../../connectionDB/user.schema");
 const bcrypt = require("bcrypt");
+const { transporter } = require("../../../config/sendEmail");
 
 const register = async (req, res) => {
     try {
@@ -28,12 +29,22 @@ const register = async (req, res) => {
         });
         // Save the user to the database
         await newUser.save();
+        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY)
+        const info = await transporter.sendMail({
+            from: '"verify your account 👻" <foo@example.com>', // sender address
+            to: `${email}`, // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "verify your email", // plain text body
+            html: `<div>
+                   <p>click to verify</p>
+                   <a href="https://trelloapp.onrender.com/verifyUser/${token}">verify</a>
+                   </div>`, // html body
+        });
         res.status(StatusCodes.CREATED).json({ message: "Registration successful" });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
     }
 };
-
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -80,5 +91,60 @@ const login = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
     }
 };
+const resetPassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        const user = req.user;
 
-module.exports = { register, login };
+        // Check if currentPassword and newPassword are provided
+        // if (!currentPassword || !newPassword) {
+        //     return res.status(StatusCodes.BAD_REQUEST).json({ message: "Both currentPassword and newPassword are required" });
+        // }
+
+        // Find the user by ID
+        const userData = await User.findById(user.id);
+
+        if (!userData) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+        }
+
+        // Compare the provided currentPassword with the stored hash
+        const isPasswordMatch = await bcrypt.compare(currentPassword, userData.password);
+
+        if (isPasswordMatch) {
+            // Hash the new password
+            // const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+            // Update the user's password
+            userData.password = newPassword;
+            await userData.save();
+
+            // Return success response
+            return res.status(StatusCodes.OK).json({ message: "Password updated" });
+        } else {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Password does not match" });
+        }
+    } catch (error) {
+        // Handle any unexpected errors
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+    }
+};
+const verifyAcount = async (req, res) => {
+    try {
+        const token = req.params
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        const user = await User.findOne({ email: decodedToken.email })
+        if (user) {
+            await User.updateOne({ email: decodedToken.email }, { isVerified: true })
+            res.status(StatusCodes.OK).json({ message: "Your account is now verified. You can log in." })
+        }
+        else {
+            res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid verification token." })
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
+    }
+
+}
+module.exports = { register, login, resetPassword, verifyAcount };

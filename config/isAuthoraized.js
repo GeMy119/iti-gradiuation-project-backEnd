@@ -32,6 +32,7 @@ module.exports = (endPoint) => {
             // console.log(isAllowed)
             if (isAllowed) {
                 // console.log(next())
+                req.user = decodedToken
                 next();
             } else {
                 res.status(StatusCodes.UNAUTHORIZED).json({ message: "Unauthorized" });
