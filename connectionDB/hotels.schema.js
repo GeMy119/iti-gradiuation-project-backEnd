@@ -7,7 +7,7 @@ const hotelSchema = new mongoose.Schema({
     location: { type: String, required: true },
     rate: { type: Number},
     counter: { type: Number}
-
+    
 }, {
     timestamps: true
 });
