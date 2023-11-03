@@ -5,10 +5,11 @@ const eventSchema = new mongoose.Schema({
     address: { type: String, required: true },
     phone: { type: String, required: true },
     location: { type: String, required: true },
+    organizer: { type: String, required: true },
     rate: { type: Number},
     price: { type: Number},
     counter: { type: Number},
-    organizer: { type: String, required: true }
+    deleted: { type: Boolean, default: false },
 
 }, {
     timestamps: true
