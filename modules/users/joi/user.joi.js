@@ -44,5 +44,15 @@ module.exports = {
                     'string.pattern.base': 'Password must be at least 8 characters long and include at least one letter and one number.',
                 }),
         })
+    },
+    addIdSchema: {
+        body: Joi.object.keys({
+            id: Joi.string().required()
+        })
+    },
+    addNewAdminAndRemoveAdmin: {
+        body: Joi.object.keys({
+            email: Joi.string().email().required()
+        })
     }
 }
