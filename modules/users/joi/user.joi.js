@@ -46,12 +46,12 @@ module.exports = {
         })
     },
     addIdSchema: {
-        body: Joi.object.keys({
+        body: Joi.object().keys({
             id: Joi.string().required()
         })
     },
     addNewAdminAndRemoveAdmin: {
-        body: Joi.object.keys({
+        body: Joi.object().keys({
             email: Joi.string().email().required()
         })
     }
