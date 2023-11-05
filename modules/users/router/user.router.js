@@ -4,10 +4,11 @@ const userRouter = require("express").Router();
 const  validateRequest  = require("../../../config/validation");
 const { GET_USER, UPDATE_PROFILE, GET_ALL_USERS, GET_ALL_USERS_DELETED, SOFT_DELETE_USER, DELETE_USER, RESET_PASSWORD, REMOVE_ADMIN, ADD_NEW_ADMIN, GET_ALL_ADMINS } = require("../endPoint");
 const { register, login, resetPassword } = require("../controller/auth.controller");
-const { getUser, updateProfile, getAllUsers, deleteSoftUser, deleteUser, getAllUsersDeleted, addNewAdmin, removeAdmin, getAllAdmins } = require("../controller/crud.controller");
+const { getUser, updateProfile, getAllUsers, deleteSoftUser, deleteUser, getAllUsersDeleted, addNewAdmin, removeAdmin, getAllAdmins, uploadImageProfile } = require("../controller/crud.controller");
 const { addCarId, addEventId, addHotelId, addRestaurantId, addVisitPlaceId } = require("../controller/services.controller");
 const { registerSchema, loginSchema, resetPasswordSchema, addIdSchema, addNewAdminAndRemoveAdmin } = require("../joi/user.joi");
 const isAuthoraized = require("../../../config/isAuthoraized");
+const upload = require("../../../config/upload");
 
 // Auth routes
 userRouter.post("/user/register", validateRequest(registerSchema), register);
@@ -21,6 +22,8 @@ userRouter.get("/getAllUsers", isAuthoraized(GET_ALL_USERS), getAllUsers);
 userRouter.get("/getAllUsers", isAuthoraized(GET_ALL_USERS_DELETED), getAllUsersDeleted);
 userRouter.put("/user/softDelete/:userId", isAuthoraized(SOFT_DELETE_USER), deleteSoftUser);
 userRouter.delete("/user/delete/:userId", isAuthoraized(DELETE_USER), deleteUser);
+userRouter.put("/user/image/:id", upload.single("image"), uploadImageProfile);
+
 
 // Service-related routes
 userRouter.post('/add-car-id', validateRequest(addIdSchema), addCarId);

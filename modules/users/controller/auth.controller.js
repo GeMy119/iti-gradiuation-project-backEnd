@@ -2,7 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const User = require("../../../connectionDB/user.schema");
 const bcrypt = require("bcrypt");
-const { transporter } = require("../../../config/sendEmail");
+const  transporter  = require("../../../config/sendEmail");
 
 const register = async (req, res) => {
     try {

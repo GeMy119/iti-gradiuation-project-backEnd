@@ -172,6 +172,43 @@ const getAllAdmins = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
     }
 };
+const uploadImageProfile = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Check if the user with the provided ID exists
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+        }
+
+        // Check if the user is logged in (adjust the condition based on your authentication method)
+        if (!user.isLogin) {
+            return res.status(StatusCodes.FORBIDDEN).json({ message: "Login first" });
+        }
+
+        // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
+        if (!req.file) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
+        }
+
+        // Assuming you have a Post model defined and it contains a 'photo' field
+        // Update the user's profile picture
+        const updatedUser = await User.findByIdAndUpdate(id, {
+            image: `localhost:8000/${req.file.path}`, // Adjust the path accordingly
+        });
+
+        // Check if the update was successful
+        if (!updatedUser) {
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to update profile" });
+        }
+
+        res.status(StatusCodes.OK).json({ message: "Profile Updated" });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+    }
+};
 
 module.exports = {
     getUser,
@@ -182,5 +219,7 @@ module.exports = {
     getAllUsersDeleted,
     addNewAdmin,
     getAllAdmins,
-    removeAdmin
+    removeAdmin,
+    uploadImageProfile
+
 };
