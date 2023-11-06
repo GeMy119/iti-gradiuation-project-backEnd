@@ -221,5 +221,4 @@ module.exports = {
     getAllAdmins,
     removeAdmin,
     uploadImageProfile
-
 };

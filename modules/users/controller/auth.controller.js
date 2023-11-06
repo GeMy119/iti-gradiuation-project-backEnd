@@ -29,7 +29,7 @@ const register = async (req, res) => {
         });
         // Save the user to the database
         await newUser.save();
-        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY)
+        const tokenVerify = jwt.sign({ email }, process.env.JWT_SECRET_KEY)
         const info = await transporter.sendMail({
             from: '"verify your account 👻" <foo@example.com>', // sender address
             to: `${email}`, // list of receivers
@@ -37,10 +37,10 @@ const register = async (req, res) => {
             text: "verify your email", // plain text body
             html: `<div>
                    <p>click to verify</p>
-                   <a href="https://trelloapp.onrender.com/verifyUser/${token}">verify</a>
+                   <a href="https://localhost:8000/verifyAccount/${token}">verify</a>
                    </div>`, // html body
         });
-        res.status(StatusCodes.CREATED).json({ message: "Registration successful" });
+        res.status(StatusCodes.CREATED).json({ message: "Registration successful",tokenVerify});
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
     }
@@ -130,21 +130,27 @@ const resetPassword = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
     }
 };
-const verifyAcount = async (req, res) => {
+const verifyAccount = async (req, res) => {
     try {
-        const token = req.params
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
-        const user = await User.findOne({ email: decodedToken.email })
-        if (user) {
-            await User.updateOne({ email: decodedToken.email }, { isVerified: true })
-            res.status(StatusCodes.OK).json({ message: "Your account is now verified. You can log in." })
+        const token = req.params.token; // Extract the token from the request parameters
+
+        if (!token) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Token is missing." });
         }
-        else {
-            res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid verification token." })
+
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+        const user = await User.findOne({ email: decodedToken.email });
+
+        if (user) {
+            await User.updateOne({ email: decodedToken.email }, { isVerified: true });
+            return res.status(StatusCodes.OK).json({ message: "Your account is now verified. You can log in." });
+        } else {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid verification token." });
         }
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
+        console.error("Error:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error"})
     }
-
 }
-module.exports = { register, login, resetPassword, verifyAcount };
+module.exports = { register, login, resetPassword, verifyAccount };
