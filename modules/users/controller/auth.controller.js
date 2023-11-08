@@ -37,7 +37,7 @@ const register = async (req, res) => {
             text: "verify your email", // plain text body
             html: `<div>
                    <p>click to verify</p>
-                   <a href="https:/itigradiuation.onrender.com/verifyAccount/${token}">verify</a>
+                   <a href="https://localhost:8000/verifyAccount/${token}">verify</a>
                    </div>`, // html body
         });
         res.status(StatusCodes.CREATED).json({ message: "Registration successful",tokenVerify});
