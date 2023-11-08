@@ -2,7 +2,8 @@ const { StatusCodes } = require("http-status-codes");
 const jwt = require("jsonwebtoken");
 const User = require("../../../connectionDB/user.schema");
 const bcrypt = require("bcrypt");
-const  transporter  = require("../../../config/sendEmail");
+const { transporter } = require("../../../config/sendEmail");
+// const  transporter  = require("../../../config/sendEmail");
 
 const register = async (req, res) => {
     try {
@@ -62,9 +63,9 @@ const login = async (req, res) => {
         }
 
         // Check if the user is verified
-        if (!user.isVerified) {
-            return res.status(StatusCodes.FORBIDDEN).json({ message: "Email is not verified" });
-        }
+        // if (!user.isVerified) {
+        //     return res.status(StatusCodes.FORBIDDEN).json({ message: "Email is not verified" });
+        // }
 
         // Sign a token with user information
         const token = jwt.sign(
