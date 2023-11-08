@@ -17,7 +17,7 @@ module.exports = {
                 .messages({
                     'any.only': 'Passwords do not match.'
                 }),
-            phone: Joi.string().regex("^01[0125][0-9]{8}$").required(),
+            phone: Joi.string().pattern(new RegExp("^01[0125][0-9]{8}$")).required(),
             address: Joi.string().required(),
             gender: Joi.string().valid("male", "female").required(),
             age: Joi.number().integer().min(18).required(),
