@@ -3,6 +3,7 @@ const express  = require("express")
 const {addEvent ,updateEvent, deleteEvent,getallEvnets,getEvent,softdeleteEvent, getSoftDeleteEvent}  = require("./controller");
 const { GET_Event, getall_Event, add_Event, update_Event, delete_Event, getSoftDelete_Event, softdelete_Event } = require("./endpoint");
 const isAuthoraized = require("../../config/isAuthoraized");
+// const isAuthoraized = require("../../config/isAuthoraized");
 //import { addvisitplace } from './controller';
 
 

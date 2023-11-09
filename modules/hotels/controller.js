@@ -2,8 +2,8 @@
 const Hotel = require("../../connectionDB/hotels.schema")
 const addHotel = async (req, res) => {
 
-    let { hotelName, email, address, phone, location  } = req.body;
-    let addHotel= await Hotel.insertMany({ hotelName, email, address, phone, location })
+    let { hotelName, email, address, phone, location, image } = req.body;
+    let addHotel = await Hotel.insertMany({ hotelName, email, address, phone, location, image })
 
     res.status(201).json({ message: "Added Success", addHotel })
 
@@ -15,7 +15,7 @@ const updateHotel = async (req, res) => {
     let updatedHotel = await Hotel.findByIdAndUpdate(hotelid, {
         hotelName: req.body.hotelName,
         email: req.body.email, address: req.body.address, phone: req.body.phone,
-        location: req.body.location 
+        location: req.body.location
     }, { new: true })
     res.json({ message: "Update Sucess", updatedHotel })
 }

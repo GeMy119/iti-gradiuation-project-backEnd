@@ -5,10 +5,11 @@ const hotelSchema = new mongoose.Schema({
     address: { type: String, required: true },
     phone: { type: String, required: true },
     location: { type: String, required: true },
-    rate: { type: Number},
-    counter: { type: Number},
+    rate: { type: Number },
+    image: { type: String },
+    counter: { type: Number },
     deleted: { type: Boolean, default: false },
-    
+
 }, {
     timestamps: true
 });

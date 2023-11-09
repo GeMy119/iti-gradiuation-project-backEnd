@@ -24,9 +24,9 @@ module.exports = (endPoint) => {
                 return res.status(StatusCodes.FORBIDDEN).json({ message: "Login first" });
             }
 
-            if (!decodedToken.isVerified) {
-                return res.status(StatusCodes.FORBIDDEN).json({ message: "Verify your account first" });
-            }
+            // if (!decodedToken.isVerified) {
+            //     return res.status(StatusCodes.FORBIDDEN).json({ message: "Verify your account first" });
+            // }
 
             const isAllowed = await rbac.can(decodedToken.role, endPoint);
             // console.log(isAllowed)

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const connection = () => {
-    return mongoose.connect(process.env.CONNECTION_STRING).then((res) => {
+    return mongoose.connect("mongodb+srv://itifinal:itifinal@myatlasclusteredu.2ru7gca.mongodb.net").then((res) => {
         console.log("DB connected")
     }).catch((err) => {
         console.log("error in db", err)
@@ -10,3 +10,5 @@ const connection = () => {
 
 
 module.exports = connection
+
+//mongodb+srv://itifinal:itifinal@myatlasclusteredu.2ru7gca.mongodb.net

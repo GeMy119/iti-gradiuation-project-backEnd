@@ -30,18 +30,37 @@ const register = async (req, res) => {
         });
         // Save the user to the database
         await newUser.save();
-        const tokenVerify = jwt.sign({ email }, process.env.JWT_SECRET_KEY)
-        const info = await transporter.sendMail({
-            from: '"verify your account 👻" <foo@example.com>', // sender address
-            to: `${email}`, // list of receivers
-            subject: "Hello ✔", // Subject line
-            text: "verify your email", // plain text body
-            html: `<div>
-                   <p>click to verify</p>
-                   <a href="https://localhost:8000/verifyAccount/${token}">verify</a>
-                   </div>`, // html body
-        });
-        res.status(StatusCodes.CREATED).json({ message: "Registration successful",tokenVerify});
+        // const tokenVerify = jwt.sign({ email }, process.env.JWT_SECRET_KEY)
+        // // const info = await transporter.sendMail({
+        // //     from: '"verify your account 👻" <foo@example.com>', // sender address
+        // //     to: `${email}`, // list of receivers
+        // //     subject: "Hello ✔", // Subject line
+        // //     text: "verify your email", // plain text body
+        // //     html: `<div>
+        // //            <p>click to verify</p>
+        // //            <a href="https://localhost:8000/verifyAccount/${tokenVerify}">verify</a>
+        // //            </div>`, // html body
+        // // });
+        // const mailOptions = {
+        //     from: '"verify your account 👻" <foo@example.com>',
+        //     to: `${email}`,
+        //     subject: 'Verification Email',
+        //     text: `Please verify your email address by clicking on the link below:\n\nhttps://localhost:8000/verifyAccount/${tokenVerify}`,
+        // };
+
+        // // Send the email.
+        // transporter.sendMail(mailOptions, (error, info) => {
+        //     if (error) {
+        //         console.log('Error sending email:', error);
+        //         // Handle the error and return a response to the client
+        //         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error sending verification email", error });
+        //     } else {
+        //         console.log('Email sent:', info.response);
+        //         // Send a success response to the client
+        //         res.status(StatusCodes.CREATED).json({ message: "Registration successful", tokenVerify });
+        //     }
+        // });
+        res.status(StatusCodes.CREATED).json({ message: "Registration successful"});
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
     }
@@ -78,7 +97,7 @@ const login = async (req, res) => {
                 role: user.role
             },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' } // Set a reasonable token expiration time
+            { expiresIn: '10h' } // Set a reasonable token expiration time
         );
 
         // Update the user's login status
@@ -151,7 +170,7 @@ const verifyAccount = async (req, res) => {
         }
     } catch (error) {
         console.error("Error:", error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error"})
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" })
     }
 }
 module.exports = { register, login, resetPassword, verifyAccount };
