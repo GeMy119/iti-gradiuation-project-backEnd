@@ -1,15 +1,62 @@
 
 const VisitPlace = require("../../connectionDB/visitplace.schema")
 const addvisitplace = async (req, res) => {
+    try {
+        // Destructure request body
+        let { visitName, email, address, phone, location, price, image } = req.body;
 
-    let { visitName, email, address, phone, location, price } = req.body;
-    let addPlace = await VisitPlace.insertMany({ visitName, email, address, phone, location, price })
+        // Insert visit place into the database
+        let addPlace = await VisitPlace.create({
+            visitName,
+            email,
+            address,
+            phone,
+            location,
+            price,
+            image: `localhost:8000/${req.file.path}`
+        });
 
-    res.status(201).json({ message: "Added Success", addPlace })
+        // Respond with success message and added visit place
+        res.status(201).json({ message: "Added Success", addPlace });
+    } catch (error) {
+        console.error('Error adding visit place:', error);
 
+        // Respond with an error message
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+};
 
-}
+const uploadImageVisitPlace= async (req, res) => {
+    try {
+        const visitPlaceId = req.params.visitPlaceId;
 
+        // Check if the user with the provided ID exists
+        const visitPlace = await VisitPlace.findById(visitPlaceId);
+        if (!visitPlace) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "visitPlaceId not found" });
+        }
+        // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
+        if (!req.file) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
+        }
+
+        // Assuming you have a Post model defined and it contains a 'photo' field
+        // Update the user's profile picture
+        const updatedVisitPlace = await VisitPlace.findByIdAndUpdate(id, {
+            image: `sea7a/${req.file.path}`, // Adjust the path accordingly
+        });
+
+        // Check if the update was successful
+        if (!updatedVisitPlace) {
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to Updated VisitPlace" });
+        }
+
+        res.status(StatusCodes.OK).json({ message: "Visit Place Updated" });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+    }
+};
 const updatevisitplace = async (req, res) => {
     const visitid = req.params.id;
     let updatedVisit = await VisitPlace.findByIdAndUpdate(visitid, {
@@ -60,12 +107,43 @@ const softdeletePlace = async (req, res) => {
     
 
 }
+const unDeletePlace = async (req, res) => {
+    const placeid = req.params.id;
+
+        // Find the place by ID
+        const place = await VisitPlace.findById(placeid);
+        if (!place) {
+            return res.status(404).json({ error: 'place not found' });
+        }
+        place.deleted = false
+        await place.save();
+        res.json({ message: "unDeleted Success" })
+}
 const getSoftDelete = async (req, res) => {
     const getsoftdellPlace = await VisitPlace.find({ deleted: true });
     res.json({ message: "All Soft Deleted Places", getsoftdellPlace })
 }
 
+const searchVisitPlace = async (req, res) => {
+    const { searchChar } = req.query;
+    try {
+        // Use find to retrieve all documents that match the partialUsername
 
+        const searchCriteria = {
+            visitName: { $regex: new RegExp(searchChar, 'i') },
+        };
+        const visitPlaces = await VisitPlace.find(searchCriteria);
+
+        if (!visitPlaces || visitPlaces.length === 0) {
+            return res.status(404).json({ message: 'visitPlaces not found' });
+        }
+
+        return res.status(200).json({ visitPlaces });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
 
 
 
@@ -92,5 +170,8 @@ module.exports = {
     getallvisitplace,
     getvisitplace,
     softdeletePlace,
-    getSoftDelete
+    getSoftDelete,
+    uploadImageVisitPlace,
+    searchVisitPlace,
+    unDeletePlace
 }

@@ -30,36 +30,40 @@ const register = async (req, res) => {
         });
         // Save the user to the database
         await newUser.save();
-        // const tokenVerify = jwt.sign({ email }, process.env.JWT_SECRET_KEY)
-        // // const info = await transporter.sendMail({
-        // //     from: '"verify your account 👻" <foo@example.com>', // sender address
-        // //     to: `${email}`, // list of receivers
-        // //     subject: "Hello ✔", // Subject line
-        // //     text: "verify your email", // plain text body
-        // //     html: `<div>
-        // //            <p>click to verify</p>
-        // //            <a href="https://localhost:8000/verifyAccount/${tokenVerify}">verify</a>
-        // //            </div>`, // html body
-        // // });
-        // const mailOptions = {
-        //     from: '"verify your account 👻" <foo@example.com>',
-        //     to: `${email}`,
-        //     subject: 'Verification Email',
-        //     text: `Please verify your email address by clicking on the link below:\n\nhttps://localhost:8000/verifyAccount/${tokenVerify}`,
-        // };
-
-        // // Send the email.
-        // transporter.sendMail(mailOptions, (error, info) => {
-        //     if (error) {
-        //         console.log('Error sending email:', error);
-        //         // Handle the error and return a response to the client
-        //         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error sending verification email", error });
-        //     } else {
-        //         console.log('Email sent:', info.response);
-        //         // Send a success response to the client
-        //         res.status(StatusCodes.CREATED).json({ message: "Registration successful", tokenVerify });
-        //     }
+        // const token = jwt.sign({ email }, "gemy")
+        // console.log(token)
+        // const info = await transporter.sendMail({
+        //     from: '"verify your account 👻" <foo@example.com>', // sender address
+        //     to: `${email}`, // list of receivers
+        //     subject: "Hello ✔", // Subject line
+        //     text: "verify your email", // plain text body
+        //     html: `<div>
+        //            <p>click to verify</p>
+        //            <a href="https://trelloapp.onrender.com/verifyUser/${token}">verify</a>
+        //            </div>`, // html body
         // });
+        // console.log(info)
+    //     const mailOptions = {
+    //         from: '"verify your account 👻" <foo@example.com>',
+    //         to: `${email}`,
+    //         subject: 'Verification Email',
+    //         text: `Please verify your email address by clicking on the link below:\n\nhttps://localhost:8000/verifyAccount/${tokenVerify}`,
+    //     };
+
+    //     // Send the email.
+    //    await transporter.sendMail(mailOptions, (error, info) => {
+    //         if (error) {
+    //           console.log('Error sending email:', error);
+    //           // Handle the error and return a response to the client
+    //           return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error sending verification email", error });
+    //         } else {
+    //           console.log('Email sent:', info.response);
+    //           // Send a success response to the client
+    //           res.status(StatusCodes.CREATED).json({ message: "Registration successful", token });
+    //         }
+    //       });
+        // await newUser.save();
+
         res.status(StatusCodes.CREATED).json({ message: "Registration successful"});
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });

@@ -12,3 +12,4 @@ const connection = () => {
 module.exports = connection
 
 //mongodb+srv://itifinal:itifinal@myatlasclusteredu.2ru7gca.mongodb.net
+//mongodb://127.0.0.1:27017/tourismProject

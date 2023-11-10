@@ -1,15 +1,16 @@
 const Joi = require("joi")
-
 module.exports = {
     registerSchema: {
         body: Joi.object().keys({
             userName: Joi.string().alphanum().min(3).max(15).required(),
             email: Joi.string().email().required(),
             password: Joi.string()
-                .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$'))
+                .pattern(
+                    new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")
+                )
                 .required()
                 .messages({
-                    'string.pattern.base': 'Password must be at least 8 characters long and include at least one letter and one number.',
+                    'string.pattern.base': 'Minimum eight characters, at least one letter, one number, and one special character.',
                 }),
             cPassword: Joi.string()
                 .valid(Joi.ref("password"))
@@ -27,22 +28,26 @@ module.exports = {
         body: Joi.object().keys({
             email: Joi.string().email().required(),
             password: Joi.string()
-                .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$'))
+                .pattern(
+                    new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")
+                )
                 .required()
                 .messages({
-                    'string.pattern.base': 'Password must be at least 8 characters long and include at least one letter and one number.',
+                    'string.pattern.base': 'Minimum eight characters, at least one letter, one number, and one special character.',
                 }),
         })
     },
     resetPasswordSchema: {
         body: Joi.object().keys({
             currentPassword: Joi.string().required(),
-            newPassword: Joi.string()
-                .pattern(new RegExp('^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$'))
-                .required()
-                .messages({
-                    'string.pattern.base': 'Password must be at least 8 characters long and include at least one letter and one number.',
-                }),
+            password: Joi.string()
+            .pattern(
+              new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")
+            )
+            .required()
+            .messages({
+              'string.pattern.base': 'Minimum eight characters, at least one letter, one number, and one special character.',
+            }),
         })
     },
     addIdSchema: {

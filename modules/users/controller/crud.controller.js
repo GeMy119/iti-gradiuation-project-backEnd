@@ -4,24 +4,20 @@ const User = require("../../../connectionDB/user.schema");
 const getUser = async (req, res) => {
     try {
         const userId = req.params.userId;
-
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is missing" });
         }
-
         const user = await User.findById(userId).select("-password").populate(["hotelId", "restaurantId", "visitPlaceId", "carId", "eventId"]);
 
         if (!user) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
         }
-
         res.status(StatusCodes.OK).json({ message: "User:", user });
     } catch (error) {
         console.error("Error:", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
     }
 };
-
 const getAllUsers = async (req, res) => {
     try {
         let { page, size } = req.query;
@@ -46,7 +42,6 @@ const getAllUsers = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
     }
 };
-
 const getAllUsersDeleted = async (req, res) => {
     try {
         let { page, size } = req.query;
@@ -56,15 +51,11 @@ const getAllUsersDeleted = async (req, res) => {
         if (!size) {
             size = 15;
         }
-
         const limit = parseInt(size);
         const skip = (page - 1) * size;
-
         const allUsers = await User.find({ isDeleted: true }).select("-password").limit(limit).skip(skip);
-
         const all = await User.countDocuments({ isDeleted: true });
         const allPages = Math.ceil(all / limit);
-
         res.status(StatusCodes.OK).json({ message: "All users deleted:", page, size, allPages, users: allUsers });
     } catch (error) {
         console.error("Error:", error);
@@ -76,14 +67,12 @@ const updateProfile = async (req, res) => {
     try {
         const userId = req.params.userId;
         const dataPayload = req.body;
-
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is missing" });
         }
         if (Object.keys(dataPayload).length === 0) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "No data provided for update" });
         }
-
         const user = await User.findByIdAndUpdate(userId, dataPayload, { new: true });
         res.status(StatusCodes.OK).json({ message: "User updated", user });
     } catch (error) {
@@ -98,9 +87,21 @@ const deleteSoftUser = async (req, res) => {
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is missing" });
         }
-
         await User.findByIdAndUpdate(userId, { isDeleted: true }, { new: true });
         res.status(StatusCodes.OK).json({ message: "User soft-deleted" });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
+    }
+};
+const unDeleteUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        if (!userId) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is missing" });
+        }
+        await User.findByIdAndUpdate(userId, { isDeleted: false }, { new: true });
+        res.status(StatusCodes.OK).json({ message: "User unDeleted" });
     } catch (error) {
         console.error("Error:", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
@@ -113,7 +114,6 @@ const deleteUser = async (req, res) => {
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is missing" });
         }
-
         await User.findByIdAndDelete(userId);
         res.status(StatusCodes.OK).json({ message: "User deleted" });
     } catch (error) {
@@ -126,11 +126,9 @@ const addNewAdmin = async (req, res) => {
 
     try {
         const user = await User.findOne({ email: email });
-
         if (!user) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User not found" });
         }
-
         user.role = "admin";
         await user.save();
 
@@ -209,6 +207,27 @@ const uploadImageProfile = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
     }
 };
+const searchUser = async (req, res) => {
+    const { searchChar } = req.query;
+    try {
+        // Use find to retrieve all documents that match the partialUsername
+
+        const searchCriteria = {
+            userName: { $regex: new RegExp(searchChar, 'i') },
+        };
+        const users = await User.find(searchCriteria);
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: 'Users not found' });
+        }
+
+        return res.status(200).json({ users });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 
 module.exports = {
     getUser,
@@ -220,5 +239,7 @@ module.exports = {
     addNewAdmin,
     getAllAdmins,
     removeAdmin,
-    uploadImageProfile
+    uploadImageProfile,
+    unDeleteUser,
+    searchUser
 };

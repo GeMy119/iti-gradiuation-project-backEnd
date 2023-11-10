@@ -4,11 +4,13 @@ const carSchema = new mongoose.Schema({
     email: { type: String, required: true },
     address: { type: String, required: true },
     phone: { type: String, required: true },
-    image: { type: String },
+    image: { type: String, required: true },
     location: { type: String, required: true },
-    rate: { type: Number},
-    counter: { type: Number},
-       deleted: { type: Boolean, default: false }
+    rate: { type: Number },
+    counter: { type: Number },
+    deleted: { type: Boolean, default: false },
+    image: { type: String, default: null },
+
 }, {
     timestamps: true
 });

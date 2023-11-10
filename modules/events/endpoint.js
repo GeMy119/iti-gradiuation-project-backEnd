@@ -5,6 +5,7 @@ const update_Event = "admin:update_Event"
 const delete_Event = "admin:delete_Event"
 const getSoftDelete_Event = "admin:getSoftDelete_Event"
 const softdelete_Event = "admin:softdelete_Event"
+const undelete_Event = "admin:undelete_Event"
 module.exports = {
     GET_Event,
     getall_Event,
@@ -12,5 +13,6 @@ module.exports = {
     update_Event,
     delete_Event,
     getSoftDelete_Event,
-    softdelete_Event
+    softdelete_Event,
+    undelete_Event
 }
