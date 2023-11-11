@@ -15,7 +15,7 @@ visitRouts.patch("/updatevisitplace/:id", isAuthoraized(update_Vplace), updatevi
 visitRouts.delete("/deletevisitplace/:id", isAuthoraized(delete_Vplace), deletevisitplace)
 visitRouts.get("/getallvisitplace", getallvisitplace)
 visitRouts.get("/getSoftDeletePlaces", isAuthoraized(getSoftDelete_Vplace), getSoftDelete)
-visitRouts.get("/getvisitplace/:id", isAuthoraized(GET_Vplace), getvisitplace)
+visitRouts.get("/getvisitplace/:id", getvisitplace)
 visitRouts.get("searchVisitPlace", searchVisitPlace)
 visitRouts.put("/softdeletePlace/:id", isAuthoraized(softdelete_Vplace), softdeletePlace)
 visitRouts.put("/unDeletePlace/:id", unDeletePlace)

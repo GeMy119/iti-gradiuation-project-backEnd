@@ -15,7 +15,7 @@ resturantRouts.patch("/updateresturant/:id", isAuthoraized(update_Resturant), up
 resturantRouts.delete("/deleteresturant/:id", isAuthoraized(delete_Resturant), deleteresturant)
 resturantRouts.get("/getallresturant", getallresturant)
 resturantRouts.get("/getSoftDeleteResturant", isAuthoraized(getSoftDelete_Resturant), getSoftDeleteResturant)
-resturantRouts.get("/getresturant/:id", isAuthoraized(GET_Resturant), getvisitresturant)
+resturantRouts.get("/getresturant/:id",getvisitresturant)
 resturantRouts.get("/searchResturant", searchResturant)
 resturantRouts.put("/softdeleteresturant/:id", isAuthoraized(softdelete_Resturant), softdeleteresturant)
 resturantRouts.put("/unDeleteresturant/:id", softdeleteresturant)

@@ -12,7 +12,7 @@ carRouts.patch("/unDeleteCar/:id", unDeleteCar)
 carRouts.delete("/deleteCar/:id", isAuthoraized(delete_Car), deleteCar)
 carRouts.get("/getallCar", getallCar)
 carRouts.get("/getSoftDeleteCar", isAuthoraized(getSoftDelete_Car), getSoftDeleteCar)
-carRouts.get("/getCar/:id", isAuthoraized(GET_Car), getCar)
+carRouts.get("/getCar/:id", getCar)
 carRouts.get("/searchCar",searchCar)
 carRouts.put("/softdeleteCar/:id", softdeleteCar)
 //export default visitRouts;
