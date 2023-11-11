@@ -8,7 +8,8 @@ const { getUser, updateProfile, getAllUsers, deleteSoftUser, deleteUser, getAllU
 const { addCarId, addEventId, addHotelId, addRestaurantId, addVisitPlaceId } = require("../controller/services.controller");
 const { registerSchema, loginSchema, resetPasswordSchema, addIdSchema, addNewAdminAndRemoveAdmin } = require("../joi/user.joi");
 const isAuthoraized = require("../../../config/isAuthoraized");
-const upload = require("../../../config/upload");
+// const upload = require("../../../config/upload");
+const uploadImage = require("../../../config/upload");
 
 // Auth routes
 userRouter.post("/user/register", validateRequest(registerSchema), register);
@@ -24,7 +25,7 @@ userRouter.get("/searchUser", searchUser);
 userRouter.put("/user/softDelete/:userId", deleteSoftUser);
 userRouter.put("/user/unDeleteUser/:userId",isAuthoraized(UN_DELETE_USER), unDeleteUser);
 userRouter.delete("/user/delete/:userId", isAuthoraized(DELETE_USER), deleteUser);
-userRouter.put("/user/image/:id", upload.single("image"), uploadImageProfile);
+userRouter.put("/user/image/:id", uploadImage, uploadImageProfile);
 
 
 // Service-related routes

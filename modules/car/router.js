@@ -3,10 +3,11 @@ const { addCar, updateCar, deleteCar, getallCar, getSoftDeleteCar, getCar, softd
 const isAuthoraized = require("../../config/isAuthoraized");
 const { GET_Car, getall_Car, update_Car, delete_Car, getSoftDelete_Car, softdelete_Car, add_Car, undelete_Car } = require("./endpoint");
 const upload = require("../../config/upload");
+const uploadImage = require("../../config/upload");
 const carRouts = express.Router();
 
-carRouts.post("/addCar", upload.single("image"), isAuthoraized(add_Car), addCar)
-carRouts.put("/updaateCarImage/:carId", upload.single("image"), uploadImageCar)
+carRouts.post("/addCar", uploadImage, isAuthoraized(add_Car), addCar)
+carRouts.put("/updaateCarImage/:carId", uploadImage, uploadImageCar)
 carRouts.patch("/updateCar/:id", isAuthoraized(update_Car), updateCar)
 carRouts.patch("/unDeleteCar/:id", isAuthoraized(undelete_Car), unDeleteCar)
 carRouts.delete("/deleteCar/:id", isAuthoraized(delete_Car), deleteCar)

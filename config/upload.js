@@ -1,17 +1,10 @@
-const multer = require("multer");
-const path = require("path");
+const multer = require('multer');
+const { v2: cloudinary } = require('cloudinary');
+const path = require('path'); // Add this line
+const config = require('../connectionDB/config');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "images"); // Set the destination folder for uploaded files
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const extname = path.extname(file.originalname);
-    cb(null, file.fieldname + "_" + uniqueSuffix + extname);
-  },
-});
-
+// Configure Multer for image upload
+const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
   limits: {
@@ -26,4 +19,31 @@ const upload = multer({
   },
 });
 
-module.exports = upload;
+// Upload image middleware
+const uploadImage = async (req, res) => {
+  try {
+    console.log(req.file)
+    if (!req.file) {
+      throw new Error('No file uploaded');
+    }
+
+    // Upload image to Cloudinar
+    const result = await cloudinary.uploader.upload(req.file.buffer)
+
+    // Save link in MongoDB
+    const newImage = new Image({
+      cloudinaryUrl: result.secure_url,
+      filename: result.original_filename,
+    });
+
+    await newImage.save();
+
+    res.locals.image = newImage; // Pass the uploaded image data to the next middleware or route handler
+    res.json({ message: 'Image uploaded and link saved successfully', image: res.locals.image });
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports = uploadImage;
