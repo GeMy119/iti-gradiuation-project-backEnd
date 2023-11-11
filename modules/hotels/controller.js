@@ -12,7 +12,7 @@ const addHotel = async (req, res) => {
             address,
             phone,
             location,
-            image: `https://iti-final.vercel.app/${req.file.path}`
+            image: `https://itigradiuation.onrender.com/${req.file.path}`
         });
 
         // Respond with success message and added hotel
