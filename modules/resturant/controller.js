@@ -1,6 +1,6 @@
 
 const Resturant = require("../../connectionDB/resturant.schema")
-const addRestaurant = async (req, res) => {
+const addResturant = async (req, res) => {
     try {
         // Destructure request body
         let { restName, email, address, phone, location, image } = req.body;
