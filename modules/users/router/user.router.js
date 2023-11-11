@@ -1,6 +1,6 @@
 const userRouter = require("express").Router();
 
-// const { isAuthorized } = require("../../../config/isAuthorized");
+
 const validateRequest = require("../../../config/validation");
 const { GET_USER, UPDATE_PROFILE, GET_ALL_USERS, GET_ALL_USERS_DELETED, SOFT_DELETE_USER, DELETE_USER, RESET_PASSWORD, REMOVE_ADMIN, ADD_NEW_ADMIN, GET_ALL_ADMINS, UN_DELETE_USER } = require("../endPoint");
 const { register, login, resetPassword, verifyAccount } = require("../controller/auth.controller");
@@ -9,8 +9,7 @@ const { addCarId, addEventId, addHotelId, addRestaurantId, addVisitPlaceId } = r
 const { registerSchema, loginSchema, resetPasswordSchema, addIdSchema, addNewAdminAndRemoveAdmin } = require("../joi/user.joi");
 const isAuthoraized = require("../../../config/isAuthoraized");
 const uploadImage = require("../../../config/upload");
-// const upload = require("../../../config/upload");
-// const uploadImage = require("../../../config/upload");
+
 
 // Auth routes
 userRouter.post("/user/register", validateRequest(registerSchema), register);
