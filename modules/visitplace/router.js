@@ -13,7 +13,7 @@ visitRouts.post("/addvisitplace", upload.single("image"), isAuthoraized(add_Vpla
 visitRouts.post("/uploadImageVisitPlace/:visitPlaceId", upload.single("image"), uploadImageVisitPlace)
 visitRouts.patch("/updatevisitplace/:id", isAuthoraized(update_Vplace), updatevisitplace)
 visitRouts.delete("/deletevisitplace/:id", isAuthoraized(delete_Vplace), deletevisitplace)
-visitRouts.get("/getallvisitplace", isAuthoraized(getall_Vplace), getallvisitplace)
+visitRouts.get("/getallvisitplace",getallvisitplace)
 visitRouts.get("/getSoftDeletePlaces", isAuthoraized(getSoftDelete_Vplace), getSoftDelete)
 visitRouts.get("/getvisitplace/:id", isAuthoraized(GET_Vplace), getvisitplace)
 visitRouts.get("searchVisitPlace", searchVisitPlace)

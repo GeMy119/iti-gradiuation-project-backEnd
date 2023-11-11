@@ -14,7 +14,7 @@ hotelRouts.post("/addHotel", upload.single("image"), isAuthoraized(add_Hotel), a
 hotelRouts.put("/uploadImageHotel/:hotelId",upload.single("image"), uploadImageHotel)
 hotelRouts.patch("/updateHotel/:id", isAuthoraized(update_Hotel), updateHotel)
 hotelRouts.delete("/deleteHotel/:id", isAuthoraized(delete_Hotel), deleteHotel)
-hotelRouts.get("/getallHotels", isAuthoraized(getall_Hotel), getallHotels)
+hotelRouts.get("/getallHotels" ,getallHotels)
 hotelRouts.get("/getSoftDeleteHotels", isAuthoraized(getSoftDelete_Hotel), getSoftDeleteHotels)
 hotelRouts.get("/getHotel/:id", isAuthoraized(GET_Hotel), getHotel)
 hotelRouts.get("/searchHotel", searchHotel)

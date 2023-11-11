@@ -14,7 +14,7 @@ EventRouts.post("/addEvent", upload.single("image"),isAuthoraized(add_Event), ad
 EventRouts.put("/uploadImageEvent/:eventId", upload.single("image"), uploadImageEvent)
 EventRouts.patch("/updateEvent/:id", isAuthoraized(update_Event), updateEvent)
 EventRouts.delete("/deleteEvent/:id", isAuthoraized(delete_Event), deleteEvent)
-EventRouts.get("/getallEvents", isAuthoraized(getall_Event), getallEvnets)
+EventRouts.get("/getallEvents",getallEvnets)
 EventRouts.get("/getSoftDeleteEvents", isAuthoraized(getSoftDelete_Event), getSoftDeleteEvent)
 EventRouts.get("/getEvent/:id", isAuthoraized(GET_Event), getEvent)
 EventRouts.get("/searchEvent",searchEvent)

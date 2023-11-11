@@ -13,7 +13,7 @@ resturantRouts.post("/addResturant",upload.single("image") ,isAuthoraized(add_Re
 resturantRouts.put("/updateImageResturant/:resturantId", upload.single("image"), uploadImageResturant)
 resturantRouts.patch("/updateresturant/:id", isAuthoraized(update_Resturant), updateresturant)
 resturantRouts.delete("/deleteresturant/:id", isAuthoraized(delete_Resturant), deleteresturant)
-resturantRouts.get("/getallresturant", isAuthoraized(getall_Resturant), getallresturant)
+resturantRouts.get("/getallresturant", getallresturant)
 resturantRouts.get("/getSoftDeleteResturant", isAuthoraized(getSoftDelete_Resturant), getSoftDeleteResturant)
 resturantRouts.get("/getresturant/:id", isAuthoraized(GET_Resturant), getvisitresturant)
 resturantRouts.get("/searchResturant", searchResturant)
