@@ -1,32 +1,36 @@
-
+const cloud = require("../../connectionDB/config");
 const VisitPlace = require("../../connectionDB/visitplace.schema")
+
 const addvisitplace = async (req, res) => {
     try {
         // Destructure request body
         let { visitName, email, address, phone, location, price, image } = req.body;
 
-        // Insert visit place into the database
-        let addPlace = await VisitPlace.create({
+        // Upload image to Cloudinary
+        const result = await cloud(req.file.path);
+        console.log(result);
+
+        // Insert hotel into the database
+        let addedPlace = await VisitPlace.create({
             visitName,
             email,
             address,
             phone,
-            location,
             price,
-            image: `localhost:8000/${req.file.path}`
+            location,
+            image: result.secure_url
         });
 
-        // Respond with success message and added visit place
-        res.status(201).json({ message: "Added Success", addPlace });
+        // Respond with success message and added hotel
+        res.status(201).json({ message: "Added Success", addedPlace });
     } catch (error) {
-        console.error('Error adding visit place:', error);
+        console.error('Error adding car:', error);
 
         // Respond with an error message
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-
-const uploadImageVisitPlace= async (req, res) => {
+const uploadImageVisitPlace = async (req, res) => {
     try {
         const visitPlaceId = req.params.visitPlaceId;
 
@@ -39,11 +43,11 @@ const uploadImageVisitPlace= async (req, res) => {
         if (!req.file) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
         }
-
+        const result = await cloud(req.file.path)
         // Assuming you have a Post model defined and it contains a 'photo' field
         // Update the user's profile picture
         const updatedVisitPlace = await VisitPlace.findByIdAndUpdate(id, {
-            image: `sea7a/${req.file.path}`, // Adjust the path accordingly
+            image: result.secure_url, // Adjust the path accordingly
         });
 
         // Check if the update was successful
@@ -95,29 +99,29 @@ const deletevisitplace = async (req, res) => {
 const softdeletePlace = async (req, res) => {
     const placeid = req.params.id;
 
-        // Find the place by ID
-        const place = await VisitPlace.findById(placeid);
-        if (!place) {
-            return res.status(404).json({ error: 'place not found' });
-        }
-        const placevisit = await VisitPlace.findById(placeid);
-        placevisit.deleted = true
-        await placevisit.save();
-        res.json({ message: "Soft Deleted Success" })
-    
+    // Find the place by ID
+    const place = await VisitPlace.findById(placeid);
+    if (!place) {
+        return res.status(404).json({ error: 'place not found' });
+    }
+    const placevisit = await VisitPlace.findById(placeid);
+    placevisit.deleted = true
+    await placevisit.save();
+    res.json({ message: "Soft Deleted Success" })
+
 
 }
 const unDeletePlace = async (req, res) => {
     const placeid = req.params.id;
 
-        // Find the place by ID
-        const place = await VisitPlace.findById(placeid);
-        if (!place) {
-            return res.status(404).json({ error: 'place not found' });
-        }
-        place.deleted = false
-        await place.save();
-        res.json({ message: "unDeleted Success" })
+    // Find the place by ID
+    const place = await VisitPlace.findById(placeid);
+    if (!place) {
+        return res.status(404).json({ error: 'place not found' });
+    }
+    place.deleted = false
+    await place.save();
+    res.json({ message: "unDeleted Success" })
 }
 const getSoftDelete = async (req, res) => {
     const getsoftdellPlace = await VisitPlace.find({ deleted: true });
@@ -158,7 +162,7 @@ const getvisitplace = async (req, res) => {
 
     // Find the task by ID
     const place = await VisitPlace.findById(placeid);
-  
+
 
     res.status(201).json({ message: "get place", place })
 }

@@ -1,25 +1,35 @@
-
+const cloud = require("../../connectionDB/config");
 const Event = require("../../connectionDB/event.schema")
 const addEvent = async (req, res) => {
     try {
-        let { eventName, email, address, image, location, organizer, price } = req.body;
-        let addEvent = await Event.create({
+        // Destructure request body
+        let { eventName, email, address, phone, location, image, organizer, price } = req.body;
+
+        // Upload image to Cloudinary
+        const result = await cloud(req.file.path);
+        console.log(result);
+
+        // Insert hotel into the database
+        let addedEvent = await Event.create({
             eventName,
             email,
             address,
-            image: `localhost:8000/${req.file.path}`,
+            phone,
             location,
             organizer,
-            price
+            price,
+            image: result.secure_url
         });
 
-        res.status(201).json({ message: "Added Success", addEvent });
+        // Respond with success message and added hotel
+        res.status(201).json({ message: "Added Success", addedEvent });
     } catch (error) {
-        console.error('Error adding event:', error);
+        console.error('Error adding car:', error);
+
+        // Respond with an error message
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-
 const uploadImageEvent = async (req, res) => {
     try {
         const eventId = req.params.eventId;
@@ -34,11 +44,11 @@ const uploadImageEvent = async (req, res) => {
         if (!req.file) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
         }
-
+        const result = await cloud(req.file.path);
         // Assuming you have a Post model defined and it contains a 'photo' field
         // Update the user's profile picture
         const updatedEvent = await Event.findByIdAndUpdate(id, {
-            image: `sea7a/${req.file.path}`, // Adjust the path accordingly
+            image: result.secure_url, // Adjust the path accordingly
         });
 
         // Check if the update was successful
@@ -58,7 +68,7 @@ const updateEvent = async (req, res) => {
     let updatedEvent = await Event.findByIdAndUpdate(eventid, {
         eventName: req.body.eventName,
         email: req.body.email, address: req.body.address, phone: req.body.phone,
-        location: req.body.location , organizer: req.body.organizer , price:req.body.price
+        location: req.body.location, organizer: req.body.organizer, price: req.body.price
     }, { new: true })
     res.json({ message: "Update Sucess", updatedEvent })
 }

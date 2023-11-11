@@ -1,22 +1,27 @@
 
+const cloud = require("../../connectionDB/config");
 const Hotel = require("../../connectionDB/hotels.schema")
 const addHotel = async (req, res) => {
     try {
         // Destructure request body
         let { hotelName, email, address, phone, location, image } = req.body;
 
+        // Upload image to Cloudinary
+        const result = await cloud(req.file.path);
+        console.log(result);
+
         // Insert hotel into the database
-        let addHotel = await Hotel.create({
+        let addedHotel = await Hotel.create({
             hotelName,
             email,
             address,
             phone,
             location,
-            image: `https://ibb.co/album/Y0SW1b/${req.file.path}`
+            image: result.secure_url
         });
 
         // Respond with success message and added hotel
-        res.status(201).json({ message: "Added Success", addHotel });
+        res.status(201).json({ message: "Added Success", addedHotel });
     } catch (error) {
         console.error('Error adding hotel:', error);
 
@@ -24,6 +29,14 @@ const addHotel = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
+// Make sure you replace 'your_cloud_name', 'your_api_key', and 'your_api_secret' with your actual Cloudinary credentials. Also, ensure that you have the cloudinary package installed (npm install cloudinary).
+
+
+
+
+
+
+
 const uploadImageHotel = async (req, res) => {
     try {
         const hotelId = req.params.hotelId;
@@ -38,11 +51,12 @@ const uploadImageHotel = async (req, res) => {
         if (!req.file) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
         }
+        const result = await cloud(req.file.path);
 
         // Assuming you have a Post model defined and it contains a 'photo' field
         // Update the user's profile picture
         const updatedHotel = await Hotel.findByIdAndUpdate(id, {
-            image: `sea7a/${req.file.path}`, // Adjust the path accordingly
+            image: result.secure_url, // Adjust the path accordingly
         });
 
         // Check if the update was successful

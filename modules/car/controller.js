@@ -1,15 +1,33 @@
-
 const Car = require("../../connectionDB/car.schema");
-const Resturant = require("../../connectionDB/car.schema")
+const cloud = require("../../connectionDB/config");
 const addCar = async (req, res) => {
+    try {
+        // Destructure request body
+        let { carName, email, address, phone, location, image } = req.body;
 
-    let { carName, email, address, phone, location, image } = req.body;
-    let addCar = await Car.insertMany({ carName, email, address, phone, location, image:`localhost:8000/${req.file.path}` })
+        // Upload image to Cloudinary
+        const result = await cloud(req.file.path);
+        console.log(result);
 
-    res.status(201).json({ message: "Added Success", addCar })
+        // Insert hotel into the database
+        let addedCar = await Car.create({
+            carName,
+            email,
+            address,
+            phone,
+            location,
+            image: result.secure_url
+        });
 
+        // Respond with success message and added hotel
+        res.status(201).json({ message: "Added Success", addedCar });
+    } catch (error) {
+        console.error('Error adding car:', error);
 
-}
+        // Respond with an error message
+        res.status(500).json({ message: "Internal Server Error", error });
+    }
+};
 const uploadImageCar = async (req, res) => {
     try {
         const carId = req.params.carId;
@@ -24,18 +42,16 @@ const uploadImageCar = async (req, res) => {
         if (!req.file) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
         }
-
+        const result = await cloud(req.file.path);
         // Assuming you have a Post model defined and it contains a 'photo' field
         // Update the user's profile picture
         const updatedCar = await Car.findByIdAndUpdate(id, {
-            image: `sea7a/${req.file.path}`, // Adjust the path accordingly
+            image:  result.secure_url, // Adjust the path accordingly
         });
-
         // Check if the update was successful
         if (!updatedCar) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to update car" });
         }
-
         res.status(StatusCodes.OK).json({ message: "car Updated" });
     } catch (error) {
         console.error(error);

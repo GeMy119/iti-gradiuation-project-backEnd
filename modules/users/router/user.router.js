@@ -1,31 +1,34 @@
 const userRouter = require("express").Router();
 
 // const { isAuthorized } = require("../../../config/isAuthorized");
-const  validateRequest  = require("../../../config/validation");
+const validateRequest = require("../../../config/validation");
 const { GET_USER, UPDATE_PROFILE, GET_ALL_USERS, GET_ALL_USERS_DELETED, SOFT_DELETE_USER, DELETE_USER, RESET_PASSWORD, REMOVE_ADMIN, ADD_NEW_ADMIN, GET_ALL_ADMINS, UN_DELETE_USER } = require("../endPoint");
-const { register, login, resetPassword } = require("../controller/auth.controller");
+const { register, login, resetPassword, verifyAccount } = require("../controller/auth.controller");
 const { getUser, updateProfile, getAllUsers, deleteSoftUser, deleteUser, getAllUsersDeleted, addNewAdmin, removeAdmin, getAllAdmins, uploadImageProfile, unDeleteUser, searchUser } = require("../controller/crud.controller");
 const { addCarId, addEventId, addHotelId, addRestaurantId, addVisitPlaceId } = require("../controller/services.controller");
 const { registerSchema, loginSchema, resetPasswordSchema, addIdSchema, addNewAdminAndRemoveAdmin } = require("../joi/user.joi");
 const isAuthoraized = require("../../../config/isAuthoraized");
-// const upload = require("../../../config/upload");
 const uploadImage = require("../../../config/upload");
+// const upload = require("../../../config/upload");
+// const uploadImage = require("../../../config/upload");
 
 // Auth routes
 userRouter.post("/user/register", validateRequest(registerSchema), register);
 userRouter.post("/user/login", validateRequest(loginSchema), login);
+userRouter.put("/verifyAccount/:token", verifyAccount);
 userRouter.put("/user/resetPassword", isAuthoraized(RESET_PASSWORD), validateRequest(resetPasswordSchema), resetPassword);
 
 // User management routes
 userRouter.get("/user/get/:userId", isAuthoraized(GET_USER), getUser);
 userRouter.put("/user/update/:userId", isAuthoraized(UPDATE_PROFILE), updateProfile);
+userRouter.put("/user/profileImage/:userId", uploadImage.single("image"), uploadImageProfile);
 userRouter.get("/getAllUsers", isAuthoraized(GET_ALL_USERS), getAllUsers);
-userRouter.get("/getAllUsers", isAuthoraized(GET_ALL_USERS_DELETED), getAllUsersDeleted);
+userRouter.get("/getAllUsersDeleted", isAuthoraized(GET_ALL_USERS_DELETED), getAllUsersDeleted);
 userRouter.get("/searchUser", searchUser);
 userRouter.put("/user/softDelete/:userId", deleteSoftUser);
-userRouter.put("/user/unDeleteUser/:userId",isAuthoraized(UN_DELETE_USER), unDeleteUser);
+userRouter.put("/user/unDeleteUser/:userId", unDeleteUser);
 userRouter.delete("/user/delete/:userId", isAuthoraized(DELETE_USER), deleteUser);
-userRouter.put("/user/image/:id", uploadImage, uploadImageProfile);
+// userRouter.put("/user/image/:id", uploadImage, uploadImageProfile);
 
 
 // Service-related routes

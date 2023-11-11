@@ -1,30 +1,35 @@
 
+const cloud = require("../../connectionDB/config");
 const Resturant = require("../../connectionDB/resturant.schema")
+
 const addResturant = async (req, res) => {
     try {
         // Destructure request body
-        let { restName, email, address, phone, location, image } = req.body;
+        let { restName, email, address, phone, location, image} = req.body;
 
-        // Insert restaurant into the database
-        let addRestaurant = await Resturant.create({
+        // Upload image to Cloudinary
+        const result = await cloud(req.file.path);
+        console.log(result);
+
+        // Insert hotel into the database
+        let addedRes = await Resturant.create({
             restName,
             email,
             address,
             phone,
             location,
-            image: `localhost:8000/${req.file.path}`
+            image: result.secure_url
         });
 
-        // Respond with success message and added restaurant
-        res.status(201).json({ message: "Added Success", addRestaurant });
+        // Respond with success message and added hotel
+        res.status(201).json({ message: "Added Success", addedRes });
     } catch (error) {
-        console.error('Error adding restaurant:', error);
+        console.error('Error adding car:', error);
 
         // Respond with an error message
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-
 const uploadImageResturant = async (req, res) => {
     try {
         const resturantId = req.params.resturantId;
@@ -32,17 +37,18 @@ const uploadImageResturant = async (req, res) => {
         // Check if the user with the provided ID exists
         const resturant = await Resturant.findById(resturantId);
         if (!resturant) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "car not found" });
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "resturant not found" });
         }
         // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
         if (!req.file) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
         }
+        const result = await cloud(req.file.path);
 
         // Assuming you have a Post model defined and it contains a 'photo' field
         // Update the user's profile picture
         const updatedResturant = await Resturant.findByIdAndUpdate(id, {
-            image: `sea7a/${req.file.path}`, // Adjust the path accordingly
+            image: result.secure_url, // Adjust the path accordingly
         });
 
         // Check if the update was successful

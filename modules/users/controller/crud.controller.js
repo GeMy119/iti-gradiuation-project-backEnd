@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const User = require("../../../connectionDB/user.schema");
+const cloud = require("../../../connectionDB/config");
 
 const getUser = async (req, res) => {
     try {
@@ -189,11 +190,11 @@ const uploadImageProfile = async (req, res) => {
         if (!req.file) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
         }
-
+        const result = await cloud(req.file.path)
         // Assuming you have a Post model defined and it contains a 'photo' field
         // Update the user's profile picture
         const updatedUser = await User.findByIdAndUpdate(id, {
-            image: `localhost:8000/${req.file.path}`, // Adjust the path accordingly
+            image: result.secure_url, // Adjust the path accordingly
         });
 
         // Check if the update was successful
