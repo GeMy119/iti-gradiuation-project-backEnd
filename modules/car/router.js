@@ -1,5 +1,5 @@
 const express = require("express")
-const { addCar, updateCar, deleteCar, getallCar, getSoftDeleteCar, getCar, softdeleteCar, uploadImageCar, unDeleteCar, searchCar } = require("./controller");
+const { addCar, updateCar, deleteCar, getallCar, getSoftDeleteCar, getCar, softdeleteCar, unDeleteCar, searchCar } = require("./controller");
 const isAuthoraized = require("../../config/isAuthoraized");
 const { GET_Car, getall_Car, update_Car, delete_Car, getSoftDelete_Car, softdelete_Car, add_Car, undelete_Car } = require("./endpoint");
 const uploadImage = require("../../config/upload");

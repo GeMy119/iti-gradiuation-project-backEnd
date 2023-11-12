@@ -1,6 +1,6 @@
 
 const express = require("express")
-const { addvisitplace, updateVisitPlace, deletevisitplace, getallvisitplace, getvisitplace, softdeletePlace, getSoftDelete, uploadImageVisitPlace, searchVisitPlace, unDeletePlace } = require("./controller");
+const { addvisitplace, updateVisitPlace, deletevisitplace, getallvisitplace, getvisitplace, softdeletePlace, getSoftDelete, searchVisitPlace, unDeletePlace } = require("./controller");
 const isAuthoraized = require("../../config/isAuthoraized");
 const { GET_Vplace, undelete_Vplace, getall_Vplace, add_Vplace, update_Vplace, delete_Vplace, getSoftDelete_Vplace, softdelete_Vplace } = require("./endpoint");
 const uploadImage = require("../../config/upload");
