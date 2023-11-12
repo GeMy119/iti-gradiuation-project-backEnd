@@ -131,7 +131,7 @@ const getSoftDeleteHotels = async (req, res) => {
     res.json({ message: "All Soft Deleted Hotels", getsoftdellHotels })
 }
 const getallHotels = async (req, res) => {
-    const allHotels = await Hotel.find();
+    const allHotels = await Hotel.find({ deleted: false});
     res.status(201).json({ message: "All Hotels", allHotels })
 }
 
