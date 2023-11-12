@@ -17,7 +17,8 @@ const {
     ADD_EVENT_ID,
     ADD_HOTEL_ID,
     ADD_RES_ID,
-    ADD_VISITPLACE_ID
+    ADD_VISITPLACE_ID,
+    UPLOAD_IMAGE_PROFILE
 } = require("../../modules/users/endPoint");
 const { softdelete_Vplace, undelete_Vplace } = require("../../modules/visitplace/endpoint");
 const { update_Vplace } = require("../../modules/visitplace/endpoint");
@@ -43,6 +44,7 @@ module.exports = [
     ADD_HOTEL_ID,
     ADD_RES_ID,
     ADD_VISITPLACE_ID,
+    UPLOAD_IMAGE_PROFILE,
 
     GET_Car,
     getall_Car,

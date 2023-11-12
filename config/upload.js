@@ -1,7 +1,5 @@
 const multer = require('multer');
-const { v2: cloudinary } = require('cloudinary');
 const path = require('path'); // Add this line
-const config = require('../connectionDB/config');
 
 // Configure Multer for image upload
 const storage = multer.diskStorage({});

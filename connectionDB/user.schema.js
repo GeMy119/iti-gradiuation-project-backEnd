@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
         eventId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
         hotelId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Hotel" }],
         carId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Car" }],
-        restaurantId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Restaurant" }],
+        restaurantId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Resturant" }],
         visitPlaceId: [{ type: mongoose.Schema.Types.ObjectId, ref: "VisitPlace" }],
     },
     {

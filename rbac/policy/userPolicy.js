@@ -5,7 +5,8 @@ const { getall_Resturant, GET_Resturant } = require("../../modules/resturant/end
 const { GET_USER, UPDATE_PROFILE, RESERT_PASSWORD, ADD_EVENT_ID,
     ADD_HOTEL_ID,
     ADD_RES_ID,
-    ADD_VISITPLACE_ID } = require("../../modules/users/endPoint");
+    ADD_VISITPLACE_ID, 
+    UPLOAD_IMAGE_PROFILE} = require("../../modules/users/endPoint");
 const { getall_Vplace } = require("../../modules/visitplace/endpoint");
 const { GET_Vplace } = require("../../modules/visitplace/endpoint");
 
@@ -23,5 +24,6 @@ module.exports = [GET_USER, UPDATE_PROFILE, RESERT_PASSWORD,
     ADD_EVENT_ID,
     ADD_HOTEL_ID,
     ADD_RES_ID,
-    ADD_VISITPLACE_ID
+    ADD_VISITPLACE_ID,
+    UPLOAD_IMAGE_PROFILE
 ]

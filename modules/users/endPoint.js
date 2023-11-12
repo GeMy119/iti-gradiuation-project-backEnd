@@ -14,6 +14,7 @@ const RESERT_PASSWORD = "user:RESET_PASSWORD";
 const ADD_NEW_ADMIN = "admin:ADD_NEW_ADMIN"
 const REMOVE_ADMIN = "admin:REMOVE_ADMIN"
 const GET_ALL_ADMINS = "admin:GET_ALL_ADMINS"
+const UPLOAD_IMAGE_PROFILE = "admin:UPLOAD_IMAGE_PROFILE"
 
 
 module.exports = {
@@ -31,5 +32,6 @@ module.exports = {
     ADD_EVENT_ID,
     ADD_HOTEL_ID,
     ADD_RES_ID,
-    ADD_VISITPLACE_ID
+    ADD_VISITPLACE_ID,
+    UPLOAD_IMAGE_PROFILE
 }

@@ -4,7 +4,7 @@ const cloud = require("../../../connectionDB/config");
 
 const getUser = async (req, res) => {
     try {
-        const userId = req.params.userId;
+        const userId = req.user.id;
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is missing" });
         }
@@ -66,7 +66,7 @@ const getAllUsersDeleted = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     try {
-        const userId = req.params.userId;
+        const userId = req.user.id;
         const dataPayload = req.body;
         if (!userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User ID is missing" });
@@ -173,7 +173,7 @@ const getAllAdmins = async (req, res) => {
 };
 const uploadImageProfile = async (req, res) => {
     try {
-        const id = req.params.id;
+        const id = req.user.id;
 
         // Check if the user with the provided ID exists
         const user = await User.findById(id);

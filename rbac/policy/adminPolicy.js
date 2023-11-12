@@ -6,7 +6,8 @@ const { RESERT_PASSWORD, GET_USER, GET_ALL_USERS_DELETED, GET_ALL_USERS, DELETE_
     ADD_EVENT_ID,
     ADD_HOTEL_ID,
     ADD_RES_ID,
-    ADD_VISITPLACE_ID } = require("../../modules/users/endPoint");
+    ADD_VISITPLACE_ID ,
+    UPLOAD_IMAGE_PROFILE} = require("../../modules/users/endPoint");
 const { softdelete_Vplace, undelete_Vplace } = require("../../modules/visitplace/endpoint");
 const { update_Vplace } = require("../../modules/visitplace/endpoint");
 const { delete_Vplace } = require("../../modules/visitplace/endpoint");
@@ -30,6 +31,7 @@ module.exports = [
     ADD_HOTEL_ID,
     ADD_RES_ID,
     ADD_VISITPLACE_ID,
+    UPLOAD_IMAGE_PROFILE,
 
     GET_Car,
     getall_Car,
