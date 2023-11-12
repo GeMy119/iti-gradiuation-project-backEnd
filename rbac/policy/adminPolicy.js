@@ -2,7 +2,11 @@ const { GET_Car, getall_Car, add_Car, update_Car, delete_Car, getSoftDelete_Car,
 const { GET_Event, getall_Event, add_Event, update_Event, delete_Event, getSoftDelete_Event, softdelete_Event, undelete_Event } = require("../../modules/events/endpoint");
 const { GET_Hotel, getall_Hotel, add_Hotel, update_Hotel, delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel } = require("../../modules/hotels/endpoint");
 const { GET_Resturant, getall_Resturant, add_Resturant, update_Resturant, delete_Resturant, getSoftDelete_Resturant, softdelete_Resturant, undelete_Resturant } = require("../../modules/resturant/endpoint");
-const {RESERT_PASSWORD, GET_USER, GET_ALL_USERS_DELETED,GET_ALL_USERS, DELETE_USER, SOFT_DELETE_USER, UPDATE_PROFILE, UN_DELETE_USER } = require("../../modules/users/endPoint");
+const { RESERT_PASSWORD, GET_USER, GET_ALL_USERS_DELETED, GET_ALL_USERS, DELETE_USER, SOFT_DELETE_USER, UPDATE_PROFILE, UN_DELETE_USER, ADD_CAR_ID,
+    ADD_EVENT_ID,
+    ADD_HOTEL_ID,
+    ADD_RES_ID,
+    ADD_VISITPLACE_ID } = require("../../modules/users/endPoint");
 const { softdelete_Vplace, undelete_Vplace } = require("../../modules/visitplace/endpoint");
 const { update_Vplace } = require("../../modules/visitplace/endpoint");
 const { delete_Vplace } = require("../../modules/visitplace/endpoint");
@@ -12,7 +16,22 @@ const { getall_Vplace } = require("../../modules/visitplace/endpoint");
 const { GET_Vplace } = require("../../modules/visitplace/endpoint");
 
 
-module.exports = [GET_USER, GET_ALL_USERS, DELETE_USER, GET_ALL_USERS_DELETED,SOFT_DELETE_USER, UPDATE_PROFILE,RESERT_PASSWORD,UN_DELETE_USER,GET_Car,
+module.exports = [
+    GET_USER,
+    GET_ALL_USERS,
+    DELETE_USER,
+    GET_ALL_USERS_DELETED,
+    SOFT_DELETE_USER,
+    UPDATE_PROFILE,
+    RESERT_PASSWORD,
+    UN_DELETE_USER,
+    ADD_CAR_ID,
+    ADD_EVENT_ID,
+    ADD_HOTEL_ID,
+    ADD_RES_ID,
+    ADD_VISITPLACE_ID,
+
+    GET_Car,
     getall_Car,
     add_Car,
     update_Car,
