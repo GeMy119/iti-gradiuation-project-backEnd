@@ -30,49 +30,57 @@ const addEvent = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-const uploadImageEvent = async (req, res) => {
+const updateEvent = async (req, res) => {
     try {
-        const eventId = req.params.eventId;
+        const eventId = req.params.id;
+        const { eventName, email, address, phone, location,organizer,price } = req.body;
 
-        // Check if the user with the provided ID exists
-        const event = await Event.findById(eventId);
-        if (!event) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "event not found" });
+        // Check if req.file exists (a new image is being sent)
+        if (req.file) {
+            // Upload the new image to Cloudinary
+            const result = await cloud(req.file.path);
+            console.log(result);
+
+            // Update hotel with new image URL
+            const updatedEvent = await Event.findByIdAndUpdate(
+                eventId,
+                {
+                    eventName,
+                    email,
+                    organizer,
+                    price,
+                    address,
+                    phone,
+                    location,
+                    image: result.secure_url
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success with new image", updatedEvent });
+        } else {
+            // No new image, update other information without changing the image
+            const updatedEvent = await Event.findByIdAndUpdate(
+                eventId,
+                {
+                    eventName,
+                    email,
+                    organizer,
+                    price,
+                    address,
+                    phone,
+                    location,
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success without changing the image", updatedEvent });
         }
-
-        // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
-        if (!req.file) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
-        }
-        const result = await cloud(req.file.path);
-        // Assuming you have a Post model defined and it contains a 'photo' field
-        // Update the user's profile picture
-        const updatedEvent = await Event.findByIdAndUpdate(id, {
-            image: result.secure_url, // Adjust the path accordingly
-        });
-
-        // Check if the update was successful
-        if (!updatedEvent) {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to updated Event" });
-        }
-
-        res.status(StatusCodes.OK).json({ message: "Event Updated" });
     } catch (error) {
-        console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+        console.error('Error updating event:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-
-const updateEvent = async (req, res) => {
-    const eventid = req.params.id;
-    let updatedEvent = await Event.findByIdAndUpdate(eventid, {
-        eventName: req.body.eventName,
-        email: req.body.email, address: req.body.address, phone: req.body.phone,
-        location: req.body.location, organizer: req.body.organizer, price: req.body.price
-    }, { new: true })
-    res.json({ message: "Update Sucess", updatedEvent })
-}
-
 const deleteEvent = async (req, res) => {
     try {
         const eventid = req.params.id;
@@ -96,8 +104,6 @@ const deleteEvent = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
-
 const softdeleteEvent = async (req, res) => {
     const eventid = req.params.id;
 
@@ -127,17 +133,10 @@ const getSoftDeleteEvent = async (req, res) => {
     const getsoftdellEventes = await Event.find({ deleted: true });
     res.json({ message: "All Soft Deleted Events", getsoftdellEventes })
 }
-
-
-
-
-
 const getallEvnets = async (req, res) => {
     const allEvents = await Event.find();
     res.status(201).json({ message: "All Events", allEvents })
 }
-
-
 const getEvent = async (req, res) => {
     const eventid = req.params.id;
 

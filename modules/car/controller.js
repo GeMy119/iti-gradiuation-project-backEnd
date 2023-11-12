@@ -28,46 +28,53 @@ const addCar = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-const uploadImageCar = async (req, res) => {
+const updateCar = async (req, res) => {
     try {
-        const carId = req.params.carId;
+        const carId = req.params.id;
+        const { carName, email, address, phone, location } = req.body;
 
-        // Check if the user with the provided ID exists
-        const car = await Car.findById(carId);
-        if (!car) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "car not found" });
-        }
+        // Check if req.file exists (a new image is being sent)
+        if (req.file) {
+            // Upload the new image to Cloudinary
+            const result = await cloud(req.file.path);
+            console.log(result);
 
-        // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
-        if (!req.file) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
+            // Update hotel with new image URL
+            const updatedCar = await Car.findByIdAndUpdate(
+                carId,
+                {
+                    carName,
+                    email,
+                    address,
+                    phone,
+                    location,
+                    image: result.secure_url
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success with new image", updatedCar });
+        } else {
+            // No new image, update other information without changing the image
+            const updatedCar = await Car.findByIdAndUpdate(
+                carId,
+                {
+                    carName,
+                    email,
+                    address,
+                    phone,
+                    location,
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success without changing the image", updatedCar });
         }
-        const result = await cloud(req.file.path);
-        // Assuming you have a Post model defined and it contains a 'photo' field
-        // Update the user's profile picture
-        const updatedCar = await Car.findByIdAndUpdate(id, {
-            image:  result.secure_url, // Adjust the path accordingly
-        });
-        // Check if the update was successful
-        if (!updatedCar) {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to update car" });
-        }
-        res.status(StatusCodes.OK).json({ message: "car Updated" });
     } catch (error) {
-        console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+        console.error('Error updating car:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-const updateCar = async (req, res) => {
-    const carid = req.params.id;
-    let updatedCar = await Car.findByIdAndUpdate(carid, {
-        carName: req.body.restName,
-        email: req.body.email, address: req.body.address, phone: req.body.phone,
-        location: req.body.location
-    }, { new: true })
-    res.json({ message: "Update Sucess", updatedCar })
-}
-
 const deleteCar = async (req, res) => {
     try {
         const carid = req.params.id;
@@ -91,8 +98,6 @@ const deleteCar = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
-
 const softdeleteCar = async (req, res) => {
     const carid = req.params.id;
 
@@ -122,13 +127,10 @@ const getSoftDeleteCar = async (req, res) => {
     const getsoftdellcar = await Car.find({ deleted: true });
     res.json({ message: "All Soft Deleted resturant", getsoftdellcar })
 }
-
 const getallCar = async (req, res) => {
     const allCar = await Car.find();
     res.status(201).json({ message: "All Car", allCar })
 }
-
-
 const getCar = async (req, res) => {
     const Carid = req.params.id;
 
@@ -166,7 +168,6 @@ module.exports = {
     getCar,
     softdeleteCar,
     getSoftDeleteCar,
-    uploadImageCar,
     unDeleteCar,
     searchCar
 }

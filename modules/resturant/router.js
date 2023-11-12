@@ -9,13 +9,12 @@ const uploadImage = require("../../config/upload");
 
 const resturantRouts = express.Router();
 
-resturantRouts.post("/addResturant",uploadImage.single("image"),isAuthoraized(add_Resturant), addResturant)
-resturantRouts.put("/updateImageResturant/:resturantId", uploadImage.single("image"), uploadImageResturant)
-resturantRouts.patch("/updateresturant/:id", isAuthoraized(update_Resturant), updateresturant)
+resturantRouts.post("/addResturant", uploadImage.single("image"), isAuthoraized(add_Resturant), addResturant)
+resturantRouts.patch("/updateresturant/:id", uploadImage.single("image"), isAuthoraized(update_Resturant), updateresturant)
 resturantRouts.delete("/deleteresturant/:id", isAuthoraized(delete_Resturant), deleteresturant)
 resturantRouts.get("/getallresturant", getallresturant)
 resturantRouts.get("/getSoftDeleteResturant", isAuthoraized(getSoftDelete_Resturant), getSoftDeleteResturant)
-resturantRouts.get("/getresturant/:id",getvisitresturant)
+resturantRouts.get("/getresturant/:id", getvisitresturant)
 resturantRouts.get("/searchResturant", searchResturant)
 resturantRouts.put("/softdeleteresturant/:id", isAuthoraized(softdelete_Resturant), softdeleteresturant)
 resturantRouts.put("/unDeleteresturant/:id", softdeleteresturant)

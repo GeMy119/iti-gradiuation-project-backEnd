@@ -9,15 +9,14 @@ const uploadImage = require("../../config/upload");
 
 const EventRouts = express.Router();
 
-EventRouts.post("/addEvent", uploadImage.single("image"),isAuthoraized(add_Event), addEvent)
-EventRouts.put("/uploadImageEvent/:eventId", uploadImage.single("image"), uploadImageEvent)
-EventRouts.patch("/updateEvent/:id", isAuthoraized(update_Event), updateEvent)
+EventRouts.post("/addEvent", uploadImage.single("image"), isAuthoraized(add_Event), addEvent)
+EventRouts.patch("/updateEvent/:id", uploadImage.single("image"), isAuthoraized(update_Event), updateEvent)
 EventRouts.delete("/deleteEvent/:id", isAuthoraized(delete_Event), deleteEvent)
-EventRouts.get("/getallEvents",getallEvnets)
+EventRouts.get("/getallEvents", getallEvnets)
 EventRouts.get("/getSoftDeleteEvents", isAuthoraized(getSoftDelete_Event), getSoftDeleteEvent)
 EventRouts.get("/getEvent/:id", getEvent)
-EventRouts.get("/searchEvent",searchEvent)
+EventRouts.get("/searchEvent", searchEvent)
 EventRouts.put("/softdeleteEvent/:id", softdeleteEvent)
-EventRouts.put("/unDeleteEvent/:id",unDeleteEvent)
+EventRouts.put("/unDeleteEvent/:id", unDeleteEvent)
 //export default visitRouts;
 module.exports = EventRouts

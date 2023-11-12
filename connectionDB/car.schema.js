@@ -9,8 +9,7 @@ const carSchema = new mongoose.Schema({
     rate: { type: Number },
     counter: { type: Number },
     deleted: { type: Boolean, default: false },
-    image: { type: String, default: null },
-
+   
 }, {
     timestamps: true
 });

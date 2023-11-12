@@ -30,49 +30,53 @@ const addResturant = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-const uploadImageResturant = async (req, res) => {
+const updateresturant = async (req, res) => {
     try {
-        const resturantId = req.params.resturantId;
+        const resId = req.params.id;
+        const { restName, email, address, phone, location } = req.body;
 
-        // Check if the user with the provided ID exists
-        const resturant = await Resturant.findById(resturantId);
-        if (!resturant) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "resturant not found" });
+        // Check if req.file exists (a new image is being sent)
+        if (req.file) {
+            // Upload the new image to Cloudinary
+            const result = await cloud(req.file.path);
+            console.log(result);
+
+            // Update hotel with new image URL
+            const updatedRest = await Resturant.findByIdAndUpdate(
+                resId,
+                {
+                    restName,
+                    email,
+                    address,
+                    phone,
+                    location,
+                    image: result.secure_url
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success with new image", updatedRest });
+        } else {
+            // No new image, update other information without changing the image
+            const updatedRest = await Resturant.findByIdAndUpdate(
+                resId,
+                {
+                    restName,
+                    email,
+                    address,
+                    phone,
+                    location,
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success without changing the image", updatedRest });
         }
-        // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
-        if (!req.file) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
-        }
-        const result = await cloud(req.file.path);
-
-        // Assuming you have a Post model defined and it contains a 'photo' field
-        // Update the user's profile picture
-        const updatedResturant = await Resturant.findByIdAndUpdate(id, {
-            image: result.secure_url, // Adjust the path accordingly
-        });
-
-        // Check if the update was successful
-        if (!updatedResturant) {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to Updated Resturant" });
-        }
-
-        res.status(StatusCodes.OK).json({ message: "Resturant Updated" });
     } catch (error) {
-        console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+        console.error('Error updating rest:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-
-const updateresturant = async (req, res) => {
-    const resturantid = req.params.id;
-    let updatedResturant = await Resturant.findByIdAndUpdate(resturantid, {
-        restName: req.body.restName,
-        email: req.body.email, address: req.body.address, phone: req.body.phone,
-        location: req.body.location
-    }, { new: true })
-    res.json({ message: "Update Sucess", updatedResturant })
-}
-
 const deleteresturant = async (req, res) => {
     try {
         const resturantid = req.params.id;
@@ -96,8 +100,6 @@ const deleteresturant = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
-
 const softdeleteresturant = async (req, res) => {
     const resturantid = req.params.id;
 
@@ -150,17 +152,10 @@ const getSoftDeleteResturant = async (req, res) => {
     const getsoftdellresturant = await Resturant.find({ deleted: true });
     res.json({ message: "All Soft Deleted resturant", getsoftdellresturant })
 }
-
-
-
-
-
 const getallresturant = async (req, res) => {
     const allresturant = await Resturant.find();
     res.status(201).json({ message: "All resturant", allresturant })
 }
-
-
 const getvisitresturant = async (req, res) => {
     const resturantid = req.params.id;
 

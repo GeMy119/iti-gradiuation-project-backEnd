@@ -30,46 +30,55 @@ const addvisitplace = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-const uploadImageVisitPlace = async (req, res) => {
+const updateVisitPlace = async (req, res) => {
     try {
-        const visitPlaceId = req.params.visitPlaceId;
+        const visitPlaceId = req.params.id;
+        const { visitName, email, address, phone, location, price } = req.body;
 
-        // Check if the user with the provided ID exists
-        const visitPlace = await VisitPlace.findById(visitPlaceId);
-        if (!visitPlace) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "visitPlaceId not found" });
-        }
-        // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
-        if (!req.file) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
-        }
-        const result = await cloud(req.file.path)
-        // Assuming you have a Post model defined and it contains a 'photo' field
-        // Update the user's profile picture
-        const updatedVisitPlace = await VisitPlace.findByIdAndUpdate(id, {
-            image: result.secure_url, // Adjust the path accordingly
-        });
+        // Check if req.file exists (a new image is being sent)
+        if (req.file) {
+            // Upload the new image to Cloudinary
+            const result = await cloud(req.file.path);
+            console.log(result);
 
-        // Check if the update was successful
-        if (!updatedVisitPlace) {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to Updated VisitPlace" });
-        }
+            // Update hotel with new image URL
+            const updatedVisitPlace = await VisitPlace.findByIdAndUpdate(
+                visitPlaceId,
+                {
+                    visitName,
+                    email,
+                    price,
+                    address,
+                    phone,
+                    location,
+                    image: result.secure_url
+                },
+                { new: true }
+            );
 
-        res.status(StatusCodes.OK).json({ message: "Visit Place Updated" });
+            res.json({ message: "Update Success with new image", updatedVisitPlace });
+        } else {
+            // No new image, update other information without changing the image
+            const updatedVisitPlace = await VisitPlace.findByIdAndUpdate(
+                visitPlaceId,
+                {
+                    visitName,
+                    email,
+                    price,
+                    address,
+                    phone,
+                    location,
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success without changing the image", updatedVisitPlace });
+        }
     } catch (error) {
-        console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+        console.error('Error updating VisitPlace:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-const updatevisitplace = async (req, res) => {
-    const visitid = req.params.id;
-    let updatedVisit = await VisitPlace.findByIdAndUpdate(visitid, {
-        visitName: req.body.visitName,
-        email: req.body.email, address: req.body.address, phone: req.body.phone,
-        location: req.body.location, price: req.body.price
-    }, { new: true })
-    res.json({ message: "Update Sucess", updatedVisit })
-}
 
 const deletevisitplace = async (req, res) => {
     try {
@@ -94,7 +103,6 @@ const deletevisitplace = async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 };
-
 
 const softdeletePlace = async (req, res) => {
     const placeid = req.params.id;
@@ -169,13 +177,12 @@ const getvisitplace = async (req, res) => {
 
 module.exports = {
     addvisitplace,
-    updatevisitplace,
+    updateVisitPlace,
     deletevisitplace,
     getallvisitplace,
     getvisitplace,
     softdeletePlace,
     getSoftDelete,
-    uploadImageVisitPlace,
     searchVisitPlace,
     unDeletePlace
 }

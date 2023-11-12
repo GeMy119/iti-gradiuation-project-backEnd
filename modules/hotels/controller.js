@@ -1,4 +1,3 @@
-
 const cloud = require("../../connectionDB/config");
 const Hotel = require("../../connectionDB/hotels.schema")
 const addHotel = async (req, res) => {
@@ -32,53 +31,53 @@ const addHotel = async (req, res) => {
 // Make sure you replace 'your_cloud_name', 'your_api_key', and 'your_api_secret' with your actual Cloudinary credentials. Also, ensure that you have the cloudinary package installed (npm install cloudinary).
 
 
-
-
-
-
-
-const uploadImageHotel = async (req, res) => {
+const updateHotel = async (req, res) => {
     try {
-        const hotelId = req.params.hotelId;
+        const hotelId = req.params.id;
+        const { hotelName, email, address, phone, location } = req.body;
 
-        // Check if the user with the provided ID exists
-        const hotel = await Event.findById(hotelId);
-        if (!hotel) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "hotel not found" });
+        // Check if req.file exists (a new image is being sent)
+        if (req.file) {
+            // Upload the new image to Cloudinary
+            const result = await cloud(req.file.path);
+            console.log(result);
+
+            // Update hotel with new image URL
+            const updatedHotel = await Hotel.findByIdAndUpdate(
+                hotelId,
+                {
+                    hotelName,
+                    email,
+                    address,
+                    phone,
+                    location,
+                    image: result.secure_url
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success with new image", updatedHotel });
+        } else {
+            // No new image, update other information without changing the image
+            const updatedHotel = await Hotel.findByIdAndUpdate(
+                hotelId,
+                {
+                    hotelName,
+                    email,
+                    address,
+                    phone,
+                    location,
+                },
+                { new: true }
+            );
+
+            res.json({ message: "Update Success without changing the image", updatedHotel });
         }
-
-        // Assuming you have Multer configured correctly, you can access the uploaded file using req.file
-        if (!req.file) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ message: "No file uploaded" });
-        }
-        const result = await cloud(req.file.path);
-
-        // Assuming you have a Post model defined and it contains a 'photo' field
-        // Update the user's profile picture
-        const updatedHotel = await Hotel.findByIdAndUpdate(id, {
-            image: result.secure_url, // Adjust the path accordingly
-        });
-
-        // Check if the update was successful
-        if (!updatedHotel) {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Failed to updated Hotel" });
-        }
-
-        res.status(StatusCodes.OK).json({ message: "Hotel Updated" });
     } catch (error) {
-        console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+        console.error('Error updating hotel:', error);
+        res.status(500).json({ message: "Internal Server Error", error });
     }
 };
-const updateHotel = async (req, res) => {
-    const hotelid = req.params.id;
-    let updatedHotel = await Hotel.findByIdAndUpdate(hotelid, {
-        hotelName: req.body.hotelName,
-        email: req.body.email, address: req.body.address, phone: req.body.phone,
-        location: req.body.location
-    }, { new: true })
-    res.json({ message: "Update Sucess", updatedHotel })
-}
 const deleteHotel = async (req, res) => {
     try {
         const hotelid = req.params.id;

@@ -9,8 +9,7 @@ const uploadImage = require("../../config/upload");
 
 const hotelRouts = express.Router();
 hotelRouts.post("/addHotel", uploadImage.single("image"), isAuthoraized(add_Hotel), addHotel)
-hotelRouts.put("/uploadImageHotel/:hotelId", uploadImage.single("image"), uploadImageHotel)
-hotelRouts.patch("/updateHotel/:id", isAuthoraized(update_Hotel), updateHotel)
+hotelRouts.patch("/updateHotel/:id",uploadImage.single("image") ,isAuthoraized(update_Hotel), updateHotel)
 hotelRouts.delete("/deleteHotel/:id", isAuthoraized(delete_Hotel), deleteHotel)
 hotelRouts.get("/getallHotels", getallHotels)
 hotelRouts.get("/getSoftDeleteHotels", isAuthoraized(getSoftDelete_Hotel), getSoftDeleteHotels)
