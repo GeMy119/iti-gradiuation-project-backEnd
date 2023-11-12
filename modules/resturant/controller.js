@@ -174,7 +174,6 @@ module.exports = {
     getvisitresturant,
     softdeleteresturant,
     getSoftDeleteResturant,
-    uploadImageResturant,
     searchResturant,
     unDeleteresturant
 }

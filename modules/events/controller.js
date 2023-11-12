@@ -174,7 +174,6 @@ module.exports = {
     getEvent,
     softdeleteEvent,
     getSoftDeleteEvent,
-    uploadImageEvent,
     unDeleteEvent,
     searchEvent
 }

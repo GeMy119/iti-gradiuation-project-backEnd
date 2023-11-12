@@ -2,7 +2,8 @@
 const express = require("express")
 const { addHotel, updateHotel, deleteHotel, getallHotels, getHotel, softdeleteHotel, getSoftDeleteHotels, unDeleteHotel, searchHotel } = require("./controller");
 const isAuthoraized = require("../../config/isAuthoraized");
-const { GET_Hotel, getall_Hotel, add_Hotel, update_Hotel, delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel } = require("./endpoint");
+const { GET_Hotel, getall_Hotel, add_Hotel, update_Hotel,
+     delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel } = require("./endpoint");
 const uploadImage = require("../../config/upload");
 
 

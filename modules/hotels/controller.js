@@ -173,7 +173,6 @@ module.exports = {
     getHotel,
     softdeleteHotel,
     getSoftDeleteHotels,
-    uploadImageHotel,
     unDeleteHotel,
     searchHotel
 }
