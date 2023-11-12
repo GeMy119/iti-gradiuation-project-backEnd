@@ -108,7 +108,7 @@ const login = async (req, res) => {
 const resetPassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
-        const user = req.user;
+        const id = req.params.id;
 
         // Check if currentPassword and newPassword are provided
         // if (!currentPassword || !newPassword) {
@@ -116,7 +116,7 @@ const resetPassword = async (req, res) => {
         // }
 
         // Find the user by ID
-        const userData = await User.findById(user.id);
+        const userData = await User.findById(id);
 
         if (!userData) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });

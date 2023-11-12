@@ -40,7 +40,7 @@ module.exports = {
     resetPasswordSchema: {
         body: Joi.object().keys({
             currentPassword: Joi.string().required(),
-            password: Joi.string()
+            newPassword: Joi.string()
             .pattern(
               new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$")
             )

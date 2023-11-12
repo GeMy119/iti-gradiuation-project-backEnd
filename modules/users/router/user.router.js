@@ -15,7 +15,7 @@ const uploadImage = require("../../../config/upload");
 userRouter.post("/user/register", validateRequest(registerSchema), register);
 userRouter.post("/user/login", validateRequest(loginSchema), login);
 userRouter.put("/verifyAccount/:token", verifyAccount);
-userRouter.put("/user/resetPassword", isAuthoraized(RESET_PASSWORD), validateRequest(resetPasswordSchema), resetPassword);
+userRouter.put("/user/resetPassword/:id", validateRequest(resetPasswordSchema), resetPassword);
 
 // User management routes
 userRouter.get("/user/get", isAuthoraized(GET_USER), getUser);
