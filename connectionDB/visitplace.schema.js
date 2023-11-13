@@ -9,6 +9,7 @@ const visitSchema = new mongoose.Schema({
     rate: { type: Number },
     counter: { type: Number },
     deleted: { type: Boolean, default: false },
+    phone: { type: String, required: true },
 }, {
     timestamps: true
 });

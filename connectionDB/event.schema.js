@@ -10,6 +10,7 @@ const eventSchema = new mongoose.Schema({
     price: { type: Number },
     counter: { type: Number },
     deleted: { type: Boolean, default: false },
+    phone: { type: String, required: true },
 
 }, {
     timestamps: true

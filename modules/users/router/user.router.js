@@ -43,5 +43,4 @@ userRouter.post('/admin/remove', validateRequest(addNewAdminAndRemoveAdmin), isA
 // Route to get all admins
 userRouter.get('/admin/all', isAuthoraized(GET_ALL_ADMINS), getAllAdmins);
 
-
 module.exports = userRouter;
