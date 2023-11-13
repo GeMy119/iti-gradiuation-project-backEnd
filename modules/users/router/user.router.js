@@ -31,15 +31,15 @@ userRouter.delete("/user/delete/:userId", isAuthoraized(DELETE_USER), deleteUser
 
 
 // Service-related routes
-userRouter.post('/add-car-id', validateRequest(addIdSchema), isAuthoraized(ADD_CAR_ID), addCarId);
+userRouter.post('/add-car-id', validateRequest(addIdSchema), addCarId);
 userRouter.post('/add-event-id', validateRequest(addIdSchema), isAuthoraized(ADD_EVENT_ID), addEventId);
 userRouter.post('/add-hotel-id', validateRequest(addIdSchema), isAuthoraized(ADD_HOTEL_ID), addHotelId);
 userRouter.post('/add-restaurant-id', validateRequest(addIdSchema), isAuthoraized(ADD_RES_ID), addResId);
 userRouter.post('/add-visit-place-id', validateRequest(addIdSchema), isAuthoraized(ADD_VISITPLACE_ID), addVisitPlaceId);
 // Route to add a new admin
-userRouter.put('/admin/add/:id', validateRequest(addNewAdminAndRemoveAdmin), isAuthoraized(ADD_NEW_ADMIN), addNewAdmin);
+userRouter.put('/admin/add/:id', isAuthoraized(ADD_NEW_ADMIN), addNewAdmin);
 // Route to remove admin role
-userRouter.put('/admin/remove/:id', validateRequest(addNewAdminAndRemoveAdmin), isAuthoraized(REMOVE_ADMIN), removeAdmin);
+userRouter.put('/admin/remove/:id', isAuthoraized(REMOVE_ADMIN), removeAdmin);
 // Route to get all admins
 userRouter.get('/admin/all', isAuthoraized(GET_ALL_ADMINS), getAllAdmins);
 

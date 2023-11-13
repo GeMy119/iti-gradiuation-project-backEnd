@@ -17,7 +17,7 @@ const addHotelId = async (req, res) => {
                 await user.save();
                 res.status(StatusCodes.OK).json({ message: `hotel id added` });
             } else {
-                res.status(StatusCodes.FORBIDDEN).json({ message: `hotel id is already added` });
+                res.status(StatusCodes.OK).json({ message: `hotel id is already added` });
             }
         } else {
             res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid ID" });
@@ -38,7 +38,7 @@ const addEventId = async (req, res) => {
                 await user.save();
                 res.status(StatusCodes.OK).json({ message: `event id added` });
             } else {
-                res.status(StatusCodes.FORBIDDEN).json({ message: `event id is already added` });
+                res.status(StatusCodes.OK).json({ message: `event id is already added` });
             }
         } else {
             res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid ID" });
@@ -60,7 +60,7 @@ const addResId = async (req, res) => {
                 await user.save();
                 res.status(StatusCodes.OK).json({ message: `restaurant id added` });
             } else {
-                res.status(StatusCodes.FORBIDDEN).json({ message: `restaurant id is already added` });
+                res.status(StatusCodes.OK).json({ message: `restaurant id is already added` });
             }
             // restaurant.counter += 1
             // await restaurant.save()
@@ -86,7 +86,7 @@ const addVisitPlaceId = async (req, res) => {
                 await user.save();
                 res.status(StatusCodes.OK).json({ message: `visitPlace id added` });
             } else {
-                res.status(StatusCodes.FORBIDDEN).json({ message: `visitPlace id is already added` });
+                res.status(StatusCodes.OK).json({ message: `visitPlace id is already added` });
             }
         } else {
             res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid ID" });
@@ -107,7 +107,7 @@ const addCarId = async (req, res) => {
                 await user.save();
                 res.status(StatusCodes.OK).json({ message: `car id added` });
             } else {
-                res.status(StatusCodes.FORBIDDEN).json({ message: `car id is already added` });
+                res.status(StatusCodes.OK).json({ message: `car id is already added` });
             }
         } else {
             res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid ID" });
@@ -118,10 +118,13 @@ const addCarId = async (req, res) => {
     }
 }
 
+
+
+
 module.exports = {
     addCarId,
     addEventId,
     addHotelId,
     addResId,
-    addVisitPlaceId
+    addVisitPlaceId,
 };

@@ -159,7 +159,39 @@ const getallvisitplace = async (req, res) => {
     const allplace = await VisitPlace.find({ deleted: false });
     res.status(201).json({ message: "All Places", allplace })
 }
+const setRateVisitPlace= async (req, res) => {
+    try {
+        const visitPlaceId = req.params.id;
+        const { rating } = req.body;
 
+        if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid rating' });
+        }
+
+        const visitPlace = await VisitPlace.findById(visitPlaceId);
+
+        if (!visitPlace) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Visit place not found' });
+        }
+
+        // Add the new rating to the array
+        visitPlace.ratings.push(rating);
+
+        // Calculate the average rating
+        const averageRating = visitPlace.ratings.reduce((sum, val) => sum + val, 0) / visitPlace.ratings.length;
+
+        // Update the average rating in the VisitPlace document
+        visitPlace.averageRating = averageRating;
+
+        // Save the changes
+        await visitPlace.save();
+
+        res.status(StatusCodes.OK).json({ message: 'Rating set successfully', averageRating });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error setting rating', error });
+    }
+};
 
 const getvisitplace = async (req, res) => {
     const placeid = req.params.id;
@@ -180,5 +212,6 @@ module.exports = {
     softdeletePlace,
     getSoftDelete,
     searchVisitPlace,
-    unDeletePlace
+    unDeletePlace,
+    setRateVisitPlace
 }
