@@ -1,6 +1,6 @@
 // controllers/carReservationController.js
 const { StatusCodes } = require('http-status-codes');
-const CarReservation = require('../models/carReservation.model');
+const CarReservation = require('../../connectionDB/reserveCar.schema');
 
 // Controller to create a new car reservation
 const createCarReservation = async (req, res) => {
