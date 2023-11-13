@@ -34,7 +34,7 @@ const createRestReserve = async (req, res) => {
 // Controller to get all restaurant reservations
 const getAllRestReserv = async (req, res) => {
     try {
-        const restaurantReservations = await reservRest.find().populate('user').populate('Resturant');
+        const restaurantReservations = await reservRest.find().populate('user').populate('resturant');
         res.status(StatusCodes.OK).json({ restaurantReservations });
     } catch (error) {
         console.error(error);
