@@ -135,7 +135,6 @@ const getSoftDelete = async (req, res) => {
     const getsoftdellPlace = await VisitPlace.find({ deleted: true });
     res.json({ message: "All Soft Deleted Places", getsoftdellPlace })
 }
-
 const searchVisitPlace = async (req, res) => {
     const { searchChar } = req.query;
     try {
@@ -156,11 +155,8 @@ const searchVisitPlace = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
-
-
-
 const getallvisitplace = async (req, res) => {
-    const allplace = await VisitPlace.find();
+    const allplace = await VisitPlace.find({ deleted: false });
     res.status(201).json({ message: "All Places", allplace })
 }
 
