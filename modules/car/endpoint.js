@@ -6,6 +6,7 @@ const delete_Car = "admin:delete_Car"
 const getSoftDelete_Car = "admin:getSoftDelete_Car"
 const softdelete_Car = "admin:softdelete_Car"
 const undelete_Car = "admin:undelete_Car"
+const Add_Reserve_Car = "admin:Add_Reserve_Car"
 module.exports = {
     GET_Car,
     getall_Car,
@@ -14,5 +15,6 @@ module.exports = {
     delete_Car,
     getSoftDelete_Car,
     softdelete_Car,
-    undelete_Car
+    undelete_Car,
+    Add_Reserve_Car
 }

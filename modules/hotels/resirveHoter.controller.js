@@ -34,15 +34,41 @@ const createReservation = async (req, res) => {
 // Controller to get all reservations
 const getAllReservations = async (req, res) => {
     try {
-        const reservations = await Reservation.find().populate('user').populate('hotel');
-        res.status(StatusCodes.OK).json({ reservations });
+        const restReserv = await Reservation.find().populate('user').populate('hotel');
+        res.status(StatusCodes.OK).json({ restReserv });
     } catch (error) {
         console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error fetching reservations', error });
     }
 };
+const updateReservationStatus = async (req, res) => {
+    try {
+        const { reservationId } = req.params;
 
+        // Validate input
+        if (!reservationId) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid input data' });
+        }
+
+        // Update the status of the reservation
+        const updatedReservation = await Reservation.findByIdAndUpdate(
+            reservationId,
+            { $set: { status: "done" } },
+            { new: true }
+        );
+
+        if (!updatedReservation) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Reservation not found' });
+        }
+
+        res.status(StatusCodes.OK).json({ message: 'Reservation status updated successfully', updatedReservation });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating reservation status', error });
+    }
+};
 module.exports = {
     createReservation,
     getAllReservations,
+    updateReservationStatus
 };

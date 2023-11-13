@@ -4,7 +4,7 @@ const isAuthoraized = require("../../config/isAuthoraized");
 const { GET_Hotel, getall_Hotel, add_Hotel, update_Hotel,
      delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel, Add_Reserve_Hotel } = require("./endpoint");
 const uploadImage = require("../../config/upload");
-const { createReservation, getAllReservations } = require("./resirveHoter.controller");
+const { createReservation, getAllReservations, updateReservationStatus } = require("./resirveHoter.controller");
 
 
 
@@ -19,6 +19,7 @@ hotelRouts.get("/searchHotel", searchHotel)
 hotelRouts.put("/softdeleteHotel/:id", softdeleteHotel)
 hotelRouts.put("/unDeleteHotel/:id", unDeleteHotel)
 hotelRouts.put("/setHotelRate/:id", setHotelRate)
+hotelRouts.put("/updateReservationStatus/:id", updateReservationStatus)
 // Endpoint to create a new reservation
 hotelRouts.post('/addReservations', isAuthoraized(Add_Reserve_Hotel), createReservation);
 // Endpoint to get all reservations

@@ -98,28 +98,28 @@ const addVisitPlaceId = async (req, res) => {
 };
 const addCarId = async (req, res) => {
     try {
+        console.log('Request Body:', req.body); // Log the request body
         const { id } = req.body;
+
         if (id) {
             const userReq = req.user;
-            const user = await User.findById(userReq.id)
+            const user = await User.findById(userReq.id);
+
             if (!user.carId.includes(id)) {
                 user.carId.push(id);
                 await user.save();
-                res.status(StatusCodes.OK).json({ message: `car id added` });
+                res.status(StatusCodes.OK).json({ message: 'car id added' });
             } else {
-                res.status(StatusCodes.OK).json({ message: `car id is already added` });
+                res.status(StatusCodes.OK).json({ message: 'car id is already added' });
             }
         } else {
-            res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid ID" });
+            res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid ID' });
         }
     } catch (error) {
         console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error', error: error.message });
     }
-}
-
-
-
+};
 
 module.exports = {
     addCarId,

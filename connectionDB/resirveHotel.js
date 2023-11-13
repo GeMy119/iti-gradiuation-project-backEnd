@@ -19,6 +19,11 @@ const reservationSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    status: {
+        type: String,
+        enum: ["pending", "done"],
+        default: "pending"
+    }
     // Other reservation details can be added here
 });
 

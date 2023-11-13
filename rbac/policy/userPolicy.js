@@ -1,5 +1,5 @@
-const { GET_Car, getall_Car } = require("../../modules/car/endpoint");
-const { GET_Event, getall_Event } = require("../../modules/events/endpoint");
+const { GET_Car, getall_Car, Add_Reserve_Car } = require("../../modules/car/endpoint");
+const { GET_Event, getall_Event, Update_Reserve_Event } = require("../../modules/events/endpoint");
 const { GET_Hotel, getall_Hotel, Add_Reserve_Hotel } = require("../../modules/hotels/endpoint");
 const { getall_Resturant, GET_Resturant, Add_Reserve_Rest } = require("../../modules/resturant/endpoint");
 const { GET_USER, UPDATE_PROFILE, RESERT_PASSWORD, ADD_EVENT_ID,
@@ -27,5 +27,7 @@ module.exports = [GET_USER, UPDATE_PROFILE, RESERT_PASSWORD,
     ADD_VISITPLACE_ID,
     UPLOAD_IMAGE_PROFILE,
     Add_Reserve_Hotel,
-    Add_Reserve_Rest
+    Add_Reserve_Rest,
+    Add_Reserve_Car,
+    Update_Reserve_Event
 ]
