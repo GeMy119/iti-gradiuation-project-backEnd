@@ -21,23 +21,23 @@ const getUser = async (req, res) => {
 };
 const getAllUsers = async (req, res) => {
     try {
-        let { page, size } = req.query;
-        if (!page) {
-            page = 1;
-        }
-        if (!size) {
-            size = 15;
-        }
+        // let { page, size } = req.query;
+        // if (!page) {
+        //     page = 1;
+        // }
+        // if (!size) {
+        //     size = 15;
+        // }
 
-        const limit = parseInt(size);
-        const skip = (page - 1) * size;
+        // const limit = parseInt(size);
+        // const skip = (page - 1) * size;
 
-        const allUsers = await User.find({ isDeleted: false }).select("-password").limit(limit).skip(skip);
+        const allUsers = await User.find({ isDeleted: false }).select("-password")
 
-        const all = await User.countDocuments({ isDeleted: false });
-        const allPages = Math.ceil(all / limit);
+        // const all = await User.countDocuments({ isDeleted: false });
+        // const allPages = Math.ceil(all / limit);
 
-        res.status(StatusCodes.OK).json({ message: "All users:", page, size, allPages, users: allUsers });
+        res.status(StatusCodes.OK).json({ message: "All users:", allUsers });
     } catch (error) {
         console.error("Error:", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
@@ -63,7 +63,6 @@ const getAllUsersDeleted = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
     }
 };
-
 const updateProfile = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -81,7 +80,6 @@ const updateProfile = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error", error: error.message });
     }
 };
-
 const deleteSoftUser = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -108,7 +106,6 @@ const unDeleteUser = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
     }
 };
-
 const deleteUser = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -138,7 +135,6 @@ const addNewAdmin = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
     }
 };
-
 const removeAdmin = async (req, res) => {
     const { email } = req.body;
 
@@ -157,7 +153,6 @@ const removeAdmin = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
     }
 };
-
 const getAllAdmins = async (req, res) => {
     try {
         const allAdmins = await User.find({ role: "admin" });

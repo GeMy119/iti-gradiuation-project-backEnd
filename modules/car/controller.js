@@ -80,7 +80,7 @@ const deleteCar = async (req, res) => {
         const carid = req.params.id;
 
         // Find the place by ID
-        const car = await Resturant.findById(carid);
+        const car = await Car.findById(carid);
         if (!car) {
             return res.status(404).json({ error: 'place not found' });
         }
