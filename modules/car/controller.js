@@ -128,7 +128,7 @@ const getSoftDeleteCar = async (req, res) => {
     res.json({ message: "All Soft Deleted resturant", getsoftdellcar })
 }
 const getallCar = async (req, res) => {
-    const allCar = await Car.find();
+    const allCar = await Car.find({deleted:false});
     res.status(201).json({ message: "All Car", allCar })
 }
 const getCar = async (req, res) => {

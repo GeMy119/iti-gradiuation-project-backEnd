@@ -1,6 +1,7 @@
 
 const cloud = require("../../connectionDB/config");
-const Resturant = require("../../connectionDB/resturant.schema")
+const Resturant = require("../../connectionDB/resturant.schema");
+const { flat } = require("../../rbac/policy/adminPolicy");
 
 const addResturant = async (req, res) => {
     try {
@@ -153,7 +154,7 @@ const getSoftDeleteResturant = async (req, res) => {
     res.json({ message: "All Soft Deleted resturant", getsoftdellresturant })
 }
 const getallresturant = async (req, res) => {
-    const allresturant = await Resturant.find();
+    const allresturant = await Resturant.find({deleted:false});
     res.status(201).json({ message: "All resturant", allresturant })
 }
 const getvisitresturant = async (req, res) => {

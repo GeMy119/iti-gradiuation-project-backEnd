@@ -134,7 +134,7 @@ const getSoftDeleteEvent = async (req, res) => {
     res.json({ message: "All Soft Deleted Events", getsoftdellEventes })
 }
 const getallEvnets = async (req, res) => {
-    const allEvents = await Event.find();
+    const allEvents = await Event.find({deleted:false});
     res.status(201).json({ message: "All Events", allEvents })
 }
 const getEvent = async (req, res) => {
