@@ -4,7 +4,7 @@ const { addEvent, updateEvent, deleteEvent, getallEvnets, getEvent, softdeleteEv
 const { GET_Event, getall_Event, add_Event, update_Event, delete_Event, getSoftDelete_Event, softdelete_Event, undelete_Event, Update_Reserve_Event } = require("./endpoint");
 const isAuthoraized = require("../../config/isAuthoraized");
 const uploadImage = require("../../config/upload");
-const { updateEventReservToTrue } = require("./eventReserve.controller");
+const { updateEventReservToTrue, getAllEventReservations } = require("./eventReserve.controller");
 
 
 
@@ -17,6 +17,7 @@ EventRouts.get("/getallEvents", getallEvnets)
 EventRouts.get("/getSoftDeleteEvents",getSoftDeleteEvent)
 EventRouts.get("/getEvent/:id", getEvent)
 EventRouts.get("/searchEvent", searchEvent)
+EventRouts.get("/getAllReserveEvent", getAllEventReservations)
 EventRouts.put("/softdeleteEvent/:id", softdeleteEvent)
 EventRouts.put("/unDeleteEvent/:id", unDeleteEvent)
 EventRouts.put("/setEventRate/:id", setEventRate)

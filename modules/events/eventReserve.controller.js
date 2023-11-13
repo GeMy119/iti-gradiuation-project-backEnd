@@ -32,7 +32,17 @@ const updateEventReservToTrue = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating event party reservation status', error });
     }
 };
+const getAllEventReservations = async (req, res) => {
+    try {
+        const eventReservations = await EventReserv.find().populate('user').populate('event');
+        res.status(StatusCodes.OK).json({ eventReservations });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error fetching event reservations', error });
+    }
+};
 
 module.exports = {
     updateEventReservToTrue,
+    getAllEventReservations
 };
