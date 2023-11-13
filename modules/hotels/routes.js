@@ -1,8 +1,8 @@
 const express = require("express")
-const { addHotel, updateHotel, deleteHotel, getallHotels, getHotel, softdeleteHotel, getSoftDeleteHotels, unDeleteHotel, searchHotel } = require("./controller");
+const { addHotel, updateHotel, deleteHotel, getallHotels, getHotel, softdeleteHotel, getSoftDeleteHotels, unDeleteHotel, searchHotel, setHotelRate } = require("./controller");
 const isAuthoraized = require("../../config/isAuthoraized");
 const { GET_Hotel, getall_Hotel, add_Hotel, update_Hotel,
-     delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel } = require("./endpoint");
+     delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel, Add_Reserve_Hotel } = require("./endpoint");
 const uploadImage = require("../../config/upload");
 const { createReservation, getAllReservations } = require("./resirveHoter.controller");
 
@@ -18,8 +18,9 @@ hotelRouts.get("/getHotel/:id", getHotel)
 hotelRouts.get("/searchHotel", searchHotel)
 hotelRouts.put("/softdeleteHotel/:id", softdeleteHotel)
 hotelRouts.put("/unDeleteHotel/:id", unDeleteHotel)
+hotelRouts.put("/setHotelRate/:id", setHotelRate)
 // Endpoint to create a new reservation
-hotelRouts.post('/AddReservations', createReservation);
+hotelRouts.post('/addReservations', isAuthoraized(Add_Reserve_Hotel), createReservation);
 // Endpoint to get all reservations
 hotelRouts.get('/getReservations', getAllReservations);
 module.exports = hotelRouts

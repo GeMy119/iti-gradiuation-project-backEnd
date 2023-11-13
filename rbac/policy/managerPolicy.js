@@ -1,6 +1,6 @@
 const { GET_Car, getall_Car, add_Car, update_Car, delete_Car, getSoftDelete_Car, softdelete_Car, undelete_Car } = require("../../modules/car/endpoint");
 const { GET_Event, getall_Event, add_Event, update_Event, delete_Event, getSoftDelete_Event, softdelete_Event, undelete_Event } = require("../../modules/events/endpoint");
-const { GET_Hotel, getall_Hotel, add_Hotel, update_Hotel, delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel } = require("../../modules/hotels/endpoint");
+const { GET_Hotel, getall_Hotel, add_Hotel, update_Hotel, delete_Hotel, getSoftDelete_Hotel, softdelete_Hotel, undelete_Hotel, Add_Reserve_Hotel } = require("../../modules/hotels/endpoint");
 const { GET_Resturant, getall_Resturant, add_Resturant, update_Resturant, delete_Resturant, getSoftDelete_Resturant, softdelete_Resturant, undelete_Resturant } = require("../../modules/resturant/endpoint");
 const {
     ADD_NEW_ADMIN,
@@ -72,6 +72,7 @@ module.exports = [
     getSoftDelete_Hotel,
     softdelete_Hotel,
     undelete_Hotel,
+    Add_Reserve_Hotel,
 
     GET_Resturant,
     getall_Resturant,

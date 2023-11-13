@@ -12,7 +12,7 @@ const addResturant = async (req, res) => {
         const result = await cloud(req.file.path);
         console.log(result);
 
-        // Insert hotel into the database
+        // Insert rest into the database
         let addedRes = await Resturant.create({
             restName,
             email,
@@ -22,7 +22,7 @@ const addResturant = async (req, res) => {
             image: result.secure_url
         });
 
-        // Respond with success message and added hotel
+        // Respond with success message and added rest
         res.status(201).json({ message: "Added Success", addedRes });
     } catch (error) {
         console.error('Error adding car:', error);
@@ -42,7 +42,7 @@ const updateresturant = async (req, res) => {
             const result = await cloud(req.file.path);
             console.log(result);
 
-            // Update hotel with new image URL
+            // Update rest with new image URL
             const updatedRest = await Resturant.findByIdAndUpdate(
                 resId,
                 {
@@ -167,6 +167,39 @@ const getvisitresturant = async (req, res) => {
 
     res.status(201).json({ message: "get place", resturant })
 }
+const setRestRate= async (req, res) => {
+    try {
+        const restId = req.params.id;
+        const { rating } = req.body;
+
+        if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid rating' });
+        }
+
+        const rest = await Resturant.findById(restId);
+
+        if (!rest) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'rest not found' });
+        }
+
+        // Add the new rating to the array
+        rest.ratings.push(rating);
+
+        // Calculate the average rating
+        const averageRating = rest.ratings.reduce((sum, val) => sum + val, 0) / rest.ratings.length;
+
+        // Update the average rating in the rest document
+        rest.averageRating = averageRating;
+
+        // Save the changes
+        await rest.save();
+
+        res.status(StatusCodes.OK).json({ message: 'Rating set successfully', averageRating });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error setting rating', error });
+    }
+};
 
 module.exports = {
     addResturant,
@@ -177,5 +210,6 @@ module.exports = {
     softdeleteresturant,
     getSoftDeleteResturant,
     searchResturant,
-    unDeleteresturant
+    unDeleteresturant,
+    setRestRate
 }

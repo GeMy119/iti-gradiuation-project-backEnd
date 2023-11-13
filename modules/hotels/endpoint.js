@@ -6,8 +6,8 @@ const delete_Hotel = "admin:delete_Hotel"
 const getSoftDelete_Hotel = "admin:getSoftDelete_Hotel"
 const softdelete_Hotel = "admin:softdelete_Hotel"
 const undelete_Hotel = "admin:undelete_Hotel"
+const Add_Reserve_Hotel = "user:Add_Reserve_Hotel"
 module.exports = {
-
     GET_Hotel,
     getall_Hotel,
     add_Hotel,
@@ -15,5 +15,6 @@ module.exports = {
     delete_Hotel,
     getSoftDelete_Hotel,
     softdelete_Hotel,
-    undelete_Hotel
+    undelete_Hotel,
+    Add_Reserve_Hotel
 }
