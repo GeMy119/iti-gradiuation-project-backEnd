@@ -120,10 +120,10 @@ const deleteUser = async (req, res) => {
     }
 };
 const addNewAdmin = async (req, res) => {
-    const { email } = req.body;
+    const { id } = req.params;
 
     try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findById(id);
         if (!user) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User not found" });
         }
@@ -136,10 +136,11 @@ const addNewAdmin = async (req, res) => {
     }
 };
 const removeAdmin = async (req, res) => {
-    const { email } = req.body;
+    const { id } = req.params;
 
     try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findById(id);
+
 
         if (!user) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User not found" });

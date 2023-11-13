@@ -37,9 +37,9 @@ userRouter.post('/add-hotel-id', validateRequest(addIdSchema), isAuthoraized(ADD
 userRouter.post('/add-restaurant-id', validateRequest(addIdSchema), isAuthoraized(ADD_RES_ID), addResId);
 userRouter.post('/add-visit-place-id', validateRequest(addIdSchema), isAuthoraized(ADD_VISITPLACE_ID), addVisitPlaceId);
 // Route to add a new admin
-userRouter.post('/admin/add', validateRequest(addNewAdminAndRemoveAdmin), isAuthoraized(ADD_NEW_ADMIN), addNewAdmin);
+userRouter.put('/admin/add/:id', validateRequest(addNewAdminAndRemoveAdmin), isAuthoraized(ADD_NEW_ADMIN), addNewAdmin);
 // Route to remove admin role
-userRouter.post('/admin/remove', validateRequest(addNewAdminAndRemoveAdmin), isAuthoraized(REMOVE_ADMIN), removeAdmin);
+userRouter.put('/admin/remove/:id', validateRequest(addNewAdminAndRemoveAdmin), isAuthoraized(REMOVE_ADMIN), removeAdmin);
 // Route to get all admins
 userRouter.get('/admin/all', isAuthoraized(GET_ALL_ADMINS), getAllAdmins);
 
