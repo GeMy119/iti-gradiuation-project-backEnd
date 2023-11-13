@@ -21,8 +21,8 @@ resturantRouts.put("/softdeleteresturant/:id", softdeleteresturant)
 resturantRouts.put("/unDeleteresturant/:id", unDeleteresturant)
 resturantRouts.put("/setRestRate/:id", setRestRate)
 // Endpoint to create a new reservation
-hotelRouts.post('/createRestReserve', isAuthoraized(Add_Reserve_Rest), createRestReserve);
+resturantRouts.post('/createRestReserve', isAuthoraized(Add_Reserve_Rest), createRestReserve);
 // Endpoint to get all reservations
-hotelRouts.get('/getAllRestReserv', getAllRestReserv);
+resturantRouts.get('/getAllRestReserv', getAllRestReserv);
 //export default visitRouts;
 module.exports = resturantRouts
