@@ -26,7 +26,7 @@ const addHotelId = async (req, res) => {
 };
 const addEventId = async (req, res) => {
     try {
-        const id = req.body;
+        const {id} = req.body;
         if (id) {
             const userReq = req.user;
             const user = await User.findById(userReq.id)
@@ -46,7 +46,7 @@ const addEventId = async (req, res) => {
 }
 const addResId = async (req, res) => {
     try {
-        const id = req.body;
+        const {id} = req.body;
         if (id) {
             const userReq = req.user;
             const user = await User.findById(userReq.id)
@@ -66,7 +66,7 @@ const addResId = async (req, res) => {
 }
 const addVisitPlaceId = async (req, res) => {
     try {
-        const id = req.body;
+        const {id} = req.body;
         if (id) {
             const userReq = req.user;
             const user = await User.findById(userReq.id)
@@ -86,7 +86,7 @@ const addVisitPlaceId = async (req, res) => {
 }
 const addCarId = async (req, res) => {
     try {
-        const id = req.body;
+        const {id} = req.body;
         if (id) {
             const userReq = req.user;
             const user = await User.findById(userReq.id)
