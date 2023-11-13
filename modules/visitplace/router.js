@@ -13,10 +13,10 @@ visitRouts.post("/addvisitplace", uploadImage.single("image"), isAuthoraized(add
 visitRouts.patch("/updatevisitplace/:id", uploadImage.single("image"),isAuthoraized(update_Vplace), updateVisitPlace)
 visitRouts.delete("/deletevisitplace/:id", isAuthoraized(delete_Vplace), deletevisitplace)
 visitRouts.get("/getallvisitplace", getallvisitplace)
-visitRouts.get("/getSoftDeletePlaces", isAuthoraized(getSoftDelete_Vplace), getSoftDelete)
+visitRouts.get("/getSoftDeletePlaces", getSoftDelete)
 visitRouts.get("/getvisitplace/:id", getvisitplace)
 visitRouts.get("searchVisitPlace", searchVisitPlace)
-visitRouts.put("/softdeletePlace/:id", isAuthoraized(softdelete_Vplace), softdeletePlace)
+visitRouts.put("/softdeletePlace/:id", softdeletePlace)
 visitRouts.put("/unDeletePlace/:id", unDeletePlace)
 //export default visitRouts;
 module.exports = visitRouts

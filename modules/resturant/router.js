@@ -13,10 +13,10 @@ resturantRouts.post("/addResturant", uploadImage.single("image"), isAuthoraized(
 resturantRouts.patch("/updateresturant/:id", uploadImage.single("image"), isAuthoraized(update_Resturant), updateresturant)
 resturantRouts.delete("/deleteresturant/:id", isAuthoraized(delete_Resturant), deleteresturant)
 resturantRouts.get("/getallresturant", getallresturant)
-resturantRouts.get("/getSoftDeleteResturant", isAuthoraized(getSoftDelete_Resturant), getSoftDeleteResturant)
+resturantRouts.get("/getSoftDeleteResturant", getSoftDeleteResturant)
 resturantRouts.get("/getresturant/:id", getvisitresturant)
 resturantRouts.get("/searchResturant", searchResturant)
-resturantRouts.put("/softdeleteresturant/:id", isAuthoraized(softdelete_Resturant), softdeleteresturant)
+resturantRouts.put("/softdeleteresturant/:id", softdeleteresturant)
 resturantRouts.put("/unDeleteresturant/:id", softdeleteresturant)
 //export default visitRouts;
 module.exports = resturantRouts

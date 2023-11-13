@@ -10,7 +10,7 @@ carRouts.patch("/updateCar/:id", uploadImage.single("image"), isAuthoraized(upda
 carRouts.patch("/unDeleteCar/:id", unDeleteCar)
 carRouts.delete("/deleteCar/:id", isAuthoraized(delete_Car), deleteCar)
 carRouts.get("/getallCar", getallCar)
-carRouts.get("/getSoftDeleteCar", isAuthoraized(getSoftDelete_Car), getSoftDeleteCar)
+carRouts.get("/getSoftDeleteCar", getSoftDeleteCar)
 carRouts.get("/getCar/:id", getCar)
 carRouts.get("/searchCar", searchCar)
 carRouts.put("/softdeleteCar/:id", softdeleteCar)
