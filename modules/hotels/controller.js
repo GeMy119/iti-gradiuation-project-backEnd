@@ -89,12 +89,12 @@ const deleteHotel = async (req, res) => {
         }
 
         // Delete the place using its ID
-        const deleteEvent = await Hotel.findByIdAndDelete(hotel);
-        if (!deleteEvent) {
+        const deleteHotel = await Hotel.findByIdAndDelete(hotel);
+        if (!deleteHotel) {
             return res.status(404).json({ error: 'hotel not found' });
         }
 
-        res.json({ message: 'Deleted successfully', deleteEvent });
+        res.json({ message: 'Deleted successfully', deleteHotel });
     } catch (error) {
         // Handle any errors that might occur during the process
         console.error('Error:', error);
@@ -128,7 +128,7 @@ const unDeleteHotel = async (req, res) => {
 }
 const getSoftDeleteHotels = async (req, res) => {
     const getsoftdellHotels = await Hotel.find({ deleted: true });
-    res.json({ message: "All Soft Deleted Hotels", getsoftdellHotels })
+    res.status(201).json({ message: "All Soft Deleted Hotels", getsoftdellHotels })
 }
 const getallHotels = async (req, res) => {
     const allHotels = await Hotel.find({ deleted: false});

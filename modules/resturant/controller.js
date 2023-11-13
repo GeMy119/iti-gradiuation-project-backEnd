@@ -153,6 +153,7 @@ const getSoftDeleteResturant = async (req, res) => {
     const getsoftdellresturant = await Resturant.find({ deleted: true });
     res.json({ message: "All Soft Deleted resturant", getsoftdellresturant })
 }
+
 const getallresturant = async (req, res) => {
     const allresturant = await Resturant.find({deleted:false});
     res.status(201).json({ message: "All resturant", allresturant })
