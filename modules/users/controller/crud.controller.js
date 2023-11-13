@@ -45,19 +45,19 @@ const getAllUsers = async (req, res) => {
 };
 const getAllUsersDeleted = async (req, res) => {
     try {
-        let { page, size } = req.query;
-        if (!page) {
-            page = 1;
-        }
-        if (!size) {
-            size = 15;
-        }
-        const limit = parseInt(size);
-        const skip = (page - 1) * size;
-        const allUsers = await User.find({ isDeleted: true }).select("-password").limit(limit).skip(skip);
-        const all = await User.countDocuments({ isDeleted: true });
+        // let { page, size } = req.query;
+        // if (!page) {
+        //     page = 1;
+        // }
+        // if (!size) {
+        //     size = 15;
+        // }
+        // const limit = parseInt(size);
+        // const skip = (page - 1) * size;
+        const allUsers = await User.find({ isDeleted: true }).select("-password");
+        // const all = await User.countDocuments({ isDeleted: true });
         const allPages = Math.ceil(all / limit);
-        res.status(StatusCodes.OK).json({ message: "All users deleted:", page, size, allPages, users: allUsers });
+        res.status(StatusCodes.OK).json({ message: "All users deleted:", allUsers });
     } catch (error) {
         console.error("Error:", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
