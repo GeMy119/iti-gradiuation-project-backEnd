@@ -5,16 +5,19 @@ const Reservation = require('../../connectionDB/resirveHotel');
 // Controller to create a new reservation
 const createReservation = async (req, res) => {
     try {
-        const { user, hotel, checkInDate, checkOutDate } = req.body;
-
+        const userId = req.user.id
+        if (!userId) {
+            res.status(StatusCodes.UNAUTHORIZED).json({ message: "user not founded" })
+        }
+        const { hotel, checkInDate, checkOutDate } = req.body;
         // Validate input
-        if (!user || !hotel || !checkInDate || !checkOutDate) {
+        if (!hotel || !checkInDate || !checkOutDate) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid input data' });
         }
 
         // Create a new reservation
         const reservation = await Reservation.create({
-            user,
+            user: userId,
             hotel,
             checkInDate,
             checkOutDate,

@@ -1,6 +1,6 @@
 // controllers/restaurantReservationController.js
 const { StatusCodes } = require('http-status-codes');
-const RestaurantReservation = require('../models/restaurantReservation.model');
+const reservRest = require('../../connectionDB/resirveRes.schema');
 
 // Controller to create a new restaurant reservation
 const createRestReserve = async (req, res) => {
@@ -13,7 +13,7 @@ const createRestReserve = async (req, res) => {
         }
 
         // Create a new restaurant reservation
-        const restaurantReservation = await RestaurantReservation.create({
+        const restaurantReservation = await reservRest.create({
             user,
             restaurant,
             reservationDate,
@@ -29,13 +29,16 @@ const createRestReserve = async (req, res) => {
 };
 
 // Controller to get all restaurant reservations
-const getAllReservRest = async (req, res) => {
+const getAllRestReserv = async (req, res) => {
     try {
-        const reservations = await Reservation.find().populate('user').populate('hotel');
-        res.status(StatusCodes.OK).json({ reservations });
+        const restaurantReservations = await reservRest.find().populate('user').populate('restaurant');
+        res.status(StatusCodes.OK).json({ restaurantReservations });
     } catch (error) {
         console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error fetching reservations', error });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error fetching restaurant reservations', error });
     }
 };
 
+module.exports = {
+    getAllRestReserv, createRestReserve
+}

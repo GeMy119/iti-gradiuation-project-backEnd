@@ -2,8 +2,9 @@
 const express = require("express")
 const { addResturant, updateresturant, deleteresturant, getallresturant, getvisitresturant, softdeleteresturant, getSoftDeleteResturant, searchResturant, unDeleteresturant, setRestRate } = require("./controller");
 const isAuthoraized = require("../../config/isAuthoraized");
-const { GET_Resturant, getall_Resturant, add_Resturant, update_Resturant, delete_Resturant, getSoftDelete_Resturant, softdelete_Resturant, undelete_Resturant } = require("./endpoint");
+const { GET_Resturant, getall_Resturant, add_Resturant, update_Resturant, delete_Resturant, getSoftDelete_Resturant, softdelete_Resturant, undelete_Resturant, Add_Reserve_Rest } = require("./endpoint");
 const uploadImage = require("../../config/upload");
+const { getAllRestReserv, createRestReserve } = require("./reservRest.controller");
 
 
 
@@ -19,5 +20,9 @@ resturantRouts.get("/searchResturant", searchResturant)
 resturantRouts.put("/softdeleteresturant/:id", softdeleteresturant)
 resturantRouts.put("/unDeleteresturant/:id", unDeleteresturant)
 resturantRouts.put("/setRestRate/:id", setRestRate)
+// Endpoint to create a new reservation
+hotelRouts.post('/createRestReserve', isAuthoraized(Add_Reserve_Rest), createRestReserve);
+// Endpoint to get all reservations
+hotelRouts.get('/getAllRestReserv', getAllRestReserv);
 //export default visitRouts;
 module.exports = resturantRouts
