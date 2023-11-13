@@ -54,10 +54,10 @@ const getAllUsersDeleted = async (req, res) => {
         // }
         // const limit = parseInt(size);
         // const skip = (page - 1) * size;
-        const allUsers = await User.find({ isDeleted: true }).select("-password");
+        const allUsersDeleted = await User.find({ isDeleted: true }).select("-password");
         // const all = await User.countDocuments({ isDeleted: true });
-        const allPages = Math.ceil(all / limit);
-        res.status(StatusCodes.OK).json({ message: "All users deleted:", allUsers });
+        // const allPages = Math.ceil(all / limit);
+        res.status(StatusCodes.OK).json({ message: "All users deleted:", allUsersDeleted });
     } catch (error) {
         console.error("Error:", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Error", error: error.message });
