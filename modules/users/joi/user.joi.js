@@ -55,9 +55,9 @@ module.exports = {
             id: Joi.string().required()
         })
     },
-    addNewAdminAndRemoveAdmin: {
-        body: Joi.object().keys({
-            email: Joi.string().email().required()
-        })
-    }
+    // addNewAdminAndRemoveAdmin: {
+    //     body: Joi.object().keys({
+    //         email: Joi.string().email().required()
+    //     })
+    // }
 }
