@@ -127,6 +127,9 @@ const addNewAdmin = async (req, res) => {
         if (!user) {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: "User not found" });
         }
+        if (user.role == "admin") {
+            return res.status(StatusCodes.OK).json({ message: "he is already admin" });
+        }
         user.role = "admin";
         await user.save();
 

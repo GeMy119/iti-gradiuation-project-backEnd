@@ -6,10 +6,11 @@ const carSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     image: { type: String, default: null },
     location: { type: String, required: true },
-    rate: { type: Number },
+    ratings: [{ type: Number }],
+    averageRating: { type: Number },
     counter: { type: Number },
     deleted: { type: Boolean, default: false },
-   
+
 }, {
     timestamps: true
 });

@@ -1,5 +1,6 @@
 const cloud = require("../../connectionDB/config");
 const Event = require("../../connectionDB/event.schema")
+const { StatusCodes } = require("http-status-codes");
 const addEvent = async (req, res) => {
     try {
         // Destructure request body
@@ -24,7 +25,7 @@ const addEvent = async (req, res) => {
         // Respond with success message and added hotel
         res.status(201).json({ message: "Added Success", addedEvent });
     } catch (error) {
-        console.error('Error adding car:', error);
+        console.error('Error adding event:', error);
 
         // Respond with an error message
         res.status(500).json({ message: "Internal Server Error", error });
@@ -166,6 +167,39 @@ const searchEvent = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+const setEventRate= async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { rating } = req.body;
+
+        if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid rating' });
+        }
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'event not found' });
+        }
+
+        // Add the new rating to the array
+        event.ratings.push(rating);
+
+        // Calculate the average rating
+        const averageRating = event.ratings.reduce((sum, val) => sum + val, 0) / event.ratings.length;
+
+        // Update the average rating in the event document
+        event.averageRating = averageRating;
+
+        // Save the changes
+        await event.save();
+
+        res.status(StatusCodes.OK).json({ message: 'Rating set successfully', averageRating });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error setting rating', error });
+    }
+};
 module.exports = {
     addEvent,
     updateEvent,
@@ -175,5 +209,6 @@ module.exports = {
     softdeleteEvent,
     getSoftDeleteEvent,
     unDeleteEvent,
-    searchEvent
+    searchEvent,
+    setEventRate
 }

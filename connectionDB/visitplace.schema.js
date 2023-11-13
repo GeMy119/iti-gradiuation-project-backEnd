@@ -7,6 +7,7 @@ const visitSchema = new mongoose.Schema({
     location: { type: String, required: true },
     price: { type: Number },
     ratings: [{ type: Number }],
+    averageRating: { type: Number },
     counter: { type: Number },
     deleted: { type: Boolean, default: false },
     phone: { type: String, required: true },

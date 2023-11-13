@@ -1,5 +1,6 @@
 const cloud = require("../../connectionDB/config");
 const Hotel = require("../../connectionDB/hotels.schema")
+const { StatusCodes } = require("http-status-codes");
 const addHotel = async (req, res) => {
     try {
         // Destructure request body
@@ -107,7 +108,7 @@ const softdeleteHotel = async (req, res) => {
     // Find the place by ID
     const hotel = await Hotel.findById(hotelid);
     if (!hotel) {
-        return res.status(404).json({ error: 'event not found' });
+        return res.status(404).json({ error: 'hotel not found' });
     }
     const softHotel = await Hotel.findById(hotel);
     softHotel.deleted = true
@@ -120,7 +121,7 @@ const unDeleteHotel = async (req, res) => {
     // Find the place by ID
     const hotel = await Hotel.findById(hotelid);
     if (!hotel) {
-        return res.status(404).json({ error: 'event not found' });
+        return res.status(404).json({ error: 'hotel not found' });
     }
     hotel.deleted = false
     await hotel.save();
@@ -165,6 +166,39 @@ const searchHotel = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+const setHotelRate= async (req, res) => {
+    try {
+        const hotelId = req.params.id;
+        const { rating } = req.body;
+
+        if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid rating' });
+        }
+
+        const hotel = await Hotel.findById(hotelId);
+
+        if (!hotel) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'hotel not found' });
+        }
+
+        // Add the new rating to the array
+        hotel.ratings.push(rating);
+
+        // Calculate the average rating
+        const averageRating = hotel.ratings.reduce((sum, val) => sum + val, 0) / hotel.ratings.length;
+
+        // Update the average rating in the hotel document
+        hotel.averageRating = averageRating;
+
+        // Save the changes
+        await hotel.save();
+
+        res.status(StatusCodes.OK).json({ message: 'Rating set successfully', averageRating });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error setting rating', error });
+    }
+};
 module.exports = {
     addHotel,
     updateHotel,
@@ -174,5 +208,6 @@ module.exports = {
     softdeleteHotel,
     getSoftDeleteHotels,
     unDeleteHotel,
-    searchHotel
+    searchHotel,
+    setHotelRate
 }

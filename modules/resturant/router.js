@@ -1,6 +1,6 @@
 
 const express = require("express")
-const { addResturant, updateresturant, deleteresturant, getallresturant, getvisitresturant, softdeleteresturant, getSoftDeleteResturant, searchResturant } = require("./controller");
+const { addResturant, updateresturant, deleteresturant, getallresturant, getvisitresturant, softdeleteresturant, getSoftDeleteResturant, searchResturant, unDeleteresturant } = require("./controller");
 const isAuthoraized = require("../../config/isAuthoraized");
 const { GET_Resturant, getall_Resturant, add_Resturant, update_Resturant, delete_Resturant, getSoftDelete_Resturant, softdelete_Resturant, undelete_Resturant } = require("./endpoint");
 const uploadImage = require("../../config/upload");
@@ -17,6 +17,6 @@ resturantRouts.get("/getSoftDeleteResturant", getSoftDeleteResturant)
 resturantRouts.get("/getresturant/:id", getvisitresturant)
 resturantRouts.get("/searchResturant", searchResturant)
 resturantRouts.put("/softdeleteresturant/:id", softdeleteresturant)
-resturantRouts.put("/unDeleteresturant/:id", softdeleteresturant)
+resturantRouts.put("/unDeleteresturant/:id", unDeleteresturant)
 //export default visitRouts;
 module.exports = resturantRouts

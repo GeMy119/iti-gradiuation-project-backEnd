@@ -1,5 +1,6 @@
 const Car = require("../../connectionDB/car.schema");
 const cloud = require("../../connectionDB/config");
+const { StatusCodes } = require("http-status-codes");
 const addCar = async (req, res) => {
     try {
         // Destructure request body
@@ -160,6 +161,39 @@ const searchCar = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+const setCarRate= async (req, res) => {
+    try {
+        const carId = req.params.id;
+        const { rating } = req.body;
+
+        if (!rating || typeof rating !== 'number' || rating < 1 || rating > 5) {
+            return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid rating' });
+        }
+
+        const car = await Car.findById(carId);
+
+        if (!car) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'car not found' });
+        }
+
+        // Add the new rating to the array
+        car.ratings.push(rating);
+
+        // Calculate the average rating
+        const averageRating = car.ratings.reduce((sum, val) => sum + val, 0) / car.ratings.length;
+
+        // Update the average rating in the car document
+        car.averageRating = averageRating;
+
+        // Save the changes
+        await car.save();
+
+        res.status(StatusCodes.OK).json({ message: 'Rating set successfully', averageRating });
+    } catch (error) {
+        console.error(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error setting rating', error });
+    }
+};
 module.exports = {
     addCar,
     updateCar,
@@ -169,5 +203,6 @@ module.exports = {
     softdeleteCar,
     getSoftDeleteCar,
     unDeleteCar,
-    searchCar
+    searchCar,
+    setCarRate
 }
