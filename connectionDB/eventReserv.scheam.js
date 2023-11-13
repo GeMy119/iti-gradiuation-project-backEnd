@@ -9,7 +9,7 @@ const EventReservSchema = new mongoose.Schema({
     },
     eventParty: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'EventParty', // Reference to the EventParty model
+        ref: 'Event', // Reference to the EventParty model
         required: true,
     },
     reserveTiket: {
