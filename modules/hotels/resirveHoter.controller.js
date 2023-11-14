@@ -34,8 +34,8 @@ const createReservation = async (req, res) => {
 // Controller to get all reservations
 const getAllReservations = async (req, res) => {
     try {
-        const restReserv = await Reservation.find().populate('user').populate('hotel');
-        res.status(StatusCodes.OK).json({ restReserv });
+        const hotelReserv = await Reservation.find().populate('user').populate('hotel');
+        res.status(StatusCodes.OK).json({ hotelReserv });
     } catch (error) {
         console.error(error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error fetching reservations', error });

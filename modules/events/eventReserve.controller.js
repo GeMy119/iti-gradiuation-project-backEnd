@@ -34,7 +34,7 @@ const updateEventReservToTrue = async (req, res) => {
 };
 const getAllEventReservations = async (req, res) => {
     try {
-        const eventReservations = await EventReserv.find().populate('user').populate('event');
+        const eventReservations = await EventReserv.find().populate('user').populate('eventParty');
         res.status(StatusCodes.OK).json({ eventReservations });
     } catch (error) {
         console.error(error);

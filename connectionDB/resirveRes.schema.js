@@ -9,7 +9,7 @@ const reservRestSchema = new mongoose.Schema({
     },
     restaurant: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant', // Reference to the Restaurant model
+        ref: 'Resturant', // Reference to the Restaurant model
         required: true,
     },
     reservationDate: {
