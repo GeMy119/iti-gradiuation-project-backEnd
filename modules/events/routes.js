@@ -1,10 +1,10 @@
 
 const express = require("express")
-const { addEvent, updateEvent, deleteEvent, getallEvnets, getEvent, softdeleteEvent, getSoftDeleteEvent, uploadImageEvent, unDeleteEvent, searchEvent, setEventRate } = require("./controller");
+const { addEvent, updateEvent, deleteEvent, getallEvnets, getEvent, softdeleteEvent, getSoftDeleteEvent, unDeleteEvent, searchEvent, setEventRate } = require("./controller");
 const { GET_Event, getall_Event, add_Event, update_Event, delete_Event, getSoftDelete_Event, softdelete_Event, undelete_Event, Update_Reserve_Event } = require("./endpoint");
 const isAuthoraized = require("../../config/isAuthoraized");
 const uploadImage = require("../../config/upload");
-const { updateEventReservToTrue, getAllEventReservations } = require("./eventReserve.controller");
+const { getAllEventReservations, addEventReserv } = require("./eventReserve.controller");
 
 
 
@@ -21,6 +21,6 @@ EventRouts.get("/getAllReserveEvent", getAllEventReservations)
 EventRouts.put("/softdeleteEvent/:id", softdeleteEvent)
 EventRouts.put("/unDeleteEvent/:id", unDeleteEvent)
 EventRouts.put("/setEventRate/:id", setEventRate)
-EventRouts.put("/ReservTiket/:id",isAuthoraized(Update_Reserve_Event), updateEventReservToTrue)
+EventRouts.post("/ReservTiket",isAuthoraized(Update_Reserve_Event), addEventReserv)
 //export default visitRouts;
 module.exports = EventRouts

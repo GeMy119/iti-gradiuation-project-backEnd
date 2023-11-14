@@ -6,8 +6,8 @@ const delete_Vplace = "admin:delete_Vplace"
 const getSoftDelete_Vplace = "admin:getSoftDelete_Vplace"
 const softdelete_Vplace = "admin:softdelete_Vplace"
 const undelete_Vplace = "admin:undelete_Vplace"
+const Add_reserve_Place = "user:Add_reserve_Place"
 module.exports = {
-
     GET_Vplace,
     getall_Vplace,
     add_Vplace,
@@ -15,5 +15,6 @@ module.exports = {
     delete_Vplace,
     getSoftDelete_Vplace,
     softdelete_Vplace,
-    undelete_Vplace
+    undelete_Vplace,
+    Add_reserve_Place
 }

@@ -3,7 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 const EventReserv = require('../../connectionDB/eventReserv.scheam');
 
 // Controller to update the reservation status (e.g., reserveTiket) to true
-const updateEventReservToTrue = async (req, res) => {
+const addEventReserv = async (req, res) => {
     try {
         const { eventId } = req.body;
         const userId = req.user.id
@@ -15,21 +15,22 @@ const updateEventReservToTrue = async (req, res) => {
             return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid input data' });
         }
 
-        // Update the reservation status to true
-        const updatedEventReserv = await EventReserv.findOneAndUpdate(
-            { user: userId, eventParty: eventId },
-            { $set: { reserveTiket: true } },
-            { new: true }
-        );
+        // Create a new reservation
+        const eventReserv = await EventReserv.create({
+            user: userId,
+            eventId,
+            reserveTicket: true, // You can set the default value based on your logic
+            // Add other reservation details if needed
+        });
 
-        if (!updatedEventReserv) {
+        if (!eventReserv) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: 'Event party reservation not found' });
         }
 
-        res.status(StatusCodes.OK).json({ message: 'Event party reservation status updated to true successfully', updatedEventReserv });
+        res.status(StatusCodes.OK).json({ message: 'Event party reserved', eventReserv });
     } catch (error) {
         console.error(error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating event party reservation status', error });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error adding event party reservation', error });
     }
 };
 const getAllEventReservations = async (req, res) => {
@@ -43,6 +44,6 @@ const getAllEventReservations = async (req, res) => {
 };
 
 module.exports = {
-    updateEventReservToTrue,
+    addEventReserv,
     getAllEventReservations
 };

@@ -8,7 +8,7 @@ const { RESERT_PASSWORD, GET_USER, GET_ALL_USERS_DELETED, GET_ALL_USERS, DELETE_
     ADD_RES_ID,
     ADD_VISITPLACE_ID ,
     UPLOAD_IMAGE_PROFILE} = require("../../modules/users/endPoint");
-const { softdelete_Vplace, undelete_Vplace } = require("../../modules/visitplace/endpoint");
+const { softdelete_Vplace, undelete_Vplace, Add_reserve_Place } = require("../../modules/visitplace/endpoint");
 const { update_Vplace } = require("../../modules/visitplace/endpoint");
 const { delete_Vplace } = require("../../modules/visitplace/endpoint");
 const { getSoftDelete_Vplace } = require("../../modules/visitplace/endpoint");
@@ -80,5 +80,6 @@ module.exports = [
     delete_Vplace,
     getSoftDelete_Vplace,
     softdelete_Vplace,
-    undelete_Vplace
+    undelete_Vplace,
+    Add_reserve_Place
 ]
